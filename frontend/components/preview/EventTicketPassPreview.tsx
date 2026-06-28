@@ -1,5 +1,5 @@
 import type { PassDesign } from "@/lib/pass";
-import { PreviewPlaceholder } from "./PreviewPlaceholder";
+import { WalletPassCard } from "./WalletPassCard";
 
 type EventTicketPassPreviewProps = {
   passData: PassDesign;
@@ -8,5 +8,5 @@ type EventTicketPassPreviewProps = {
 export function EventTicketPassPreview({
   passData,
 }: EventTicketPassPreviewProps) {
-  return <PreviewPlaceholder passData={passData} title="Event Ticket" />;
+  return <WalletPassCard passData={passData} variant="eventTicket" />;
 }

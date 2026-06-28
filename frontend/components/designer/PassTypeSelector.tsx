@@ -1,3 +1,5 @@
+"use client";
+
 import { PASS_TYPES, type PassType } from "@/lib/pass";
 
 const passTypeLabels: Record<PassType, string> = {
@@ -15,10 +17,11 @@ const passTypeDescriptions: Record<PassType, string> = {
 };
 
 type PassTypeSelectorProps = {
+  onChange?: (value: PassType) => void;
   value: PassType;
 };
 
-export function PassTypeSelector({ value }: PassTypeSelectorProps) {
+export function PassTypeSelector({ onChange, value }: PassTypeSelectorProps) {
   return (
     <div className="grid gap-2">
       {PASS_TYPES.map((passType) => (
@@ -28,14 +31,15 @@ export function PassTypeSelector({ value }: PassTypeSelectorProps) {
         >
           <input
             className="radio-input"
-            defaultChecked={passType === value}
+            checked={passType === value}
             name="passType"
+            onChange={() => onChange?.(passType)}
             type="radio"
             value={passType}
           />
           <span className="grid gap-1">
             <span className="small-title">{passTypeLabels[passType]}</span>
-            <span className="muted-caption leading-5">
+            <span className="choice-copy">
               {passTypeDescriptions[passType]}
             </span>
           </span>

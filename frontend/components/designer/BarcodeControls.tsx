@@ -1,17 +1,23 @@
+"use client";
+
 import { BARCODE_FORMATS, type PassBarcode } from "@/lib/pass";
 
 type BarcodeControlsProps = {
   barcode: PassBarcode;
+  onChange?: (barcode: PassBarcode) => void;
 };
 
-export function BarcodeControls({ barcode }: BarcodeControlsProps) {
+export function BarcodeControls({ barcode, onChange }: BarcodeControlsProps) {
   return (
     <div className="form-stack text-sm">
       <label className="toggle-card">
         <span>Enable Barcode</span>
         <input
+          checked={barcode.enabled}
           className="checkbox-input"
-          defaultChecked={barcode.enabled}
+          onChange={(event) =>
+            onChange?.({ ...barcode, enabled: event.target.checked })
+          }
           type="checkbox"
         />
       </label>
@@ -20,7 +26,13 @@ export function BarcodeControls({ barcode }: BarcodeControlsProps) {
         <span className="muted-label">Format</span>
         <select
           className="form-select"
-          defaultValue={barcode.format}
+          onChange={(event) =>
+            onChange?.({
+              ...barcode,
+              format: event.target.value as PassBarcode["format"],
+            })
+          }
+          value={barcode.format}
         >
           {BARCODE_FORMATS.map((format) => (
             <option key={format} value={format}>
@@ -34,8 +46,11 @@ export function BarcodeControls({ barcode }: BarcodeControlsProps) {
         <span className="muted-label">Message</span>
         <input
           className="form-input"
-          defaultValue={barcode.message}
+          onChange={(event) =>
+            onChange?.({ ...barcode, message: event.target.value })
+          }
           type="text"
+          value={barcode.message}
         />
       </label>
 
@@ -43,8 +58,11 @@ export function BarcodeControls({ barcode }: BarcodeControlsProps) {
         <span className="muted-label">Alternative Text</span>
         <input
           className="form-input"
-          defaultValue={barcode.altText}
+          onChange={(event) =>
+            onChange?.({ ...barcode, altText: event.target.value })
+          }
           type="text"
+          value={barcode.altText ?? ""}
         />
       </label>
     </div>
