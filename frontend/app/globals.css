@@ -715,18 +715,6 @@ a {
     @apply text-3xl leading-tight;
   }
 
-  .wallet-poster-placeholder {
-    @apply mt-5 h-36;
-  }
-
-  .wallet-pass-poster-generic .wallet-generic-primary {
-    @apply my-4;
-  }
-
-  .wallet-poster-primary {
-    @apply grid-cols-1;
-  }
-
   .wallet-pass-boarding {
     @apply relative;
   }

@@ -12,10 +12,6 @@ const passTypeContent: Record<PassType, { title: string; copy: string }> = {
     title: "Generic",
     copy: "Simple records, confirmations, and lightweight identity passes.",
   },
-  posterGeneric: {
-    title: "Poster Generic",
-    copy: "A generic pass preview with a large poster-style image placeholder.",
-  },
   coupon: {
     title: "Coupon",
     copy: "Offer-led passes with compact redemption details.",

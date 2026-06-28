@@ -9,7 +9,6 @@ import { BoardingPassPreview } from "@/components/preview/BoardingPassPreview";
 import { CouponPassPreview } from "@/components/preview/CouponPassPreview";
 import { EventTicketPassPreview } from "@/components/preview/EventTicketPassPreview";
 import { GenericPassPreview } from "@/components/preview/GenericPassPreview";
-import { PosterGenericPassPreview } from "@/components/preview/PosterGenericPassPreview";
 import { StoreCardPassPreview } from "@/components/preview/StoreCardPassPreview";
 import { AppHeader } from "@/components/ui/AppHeader";
 import { PassMiniature } from "@/components/ui/PassMiniature";
@@ -24,7 +23,6 @@ import {
 const previewByType = {
   boardingPass: BoardingPassPreview,
   generic: GenericPassPreview,
-  posterGeneric: PosterGenericPassPreview,
   coupon: CouponPassPreview,
   eventTicketStrip: EventTicketPassPreview,
   eventTicketBackground: EventTicketPassPreview,

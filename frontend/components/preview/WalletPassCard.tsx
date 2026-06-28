@@ -11,7 +11,6 @@ type WalletPassCardProps = {
 const passTypeClasses: Record<PassType, string> = {
   boardingPass: "wallet-pass-boarding",
   generic: "wallet-pass-generic",
-  posterGeneric: "wallet-pass-poster-generic",
   coupon: "wallet-pass-coupon",
   eventTicketStrip: "wallet-pass-event-strip",
   eventTicketBackground: "wallet-pass-event-background",
@@ -29,7 +28,6 @@ const fallbackPrimary: Record<PassType, PassField[]> = {
     { key: "to", label: "TO", value: "LAX" },
   ],
   generic: [{ key: "name", label: "NAME", value: "Enes" }],
-  posterGeneric: [{ key: "member", label: "MEMBER", value: "Enes" }],
   coupon: [{ key: "offer", label: "OFFER", value: "20% Off" }],
   eventTicketStrip: [{ key: "event", label: "EVENT", value: "Design Night" }],
   eventTicketBackground: [{ key: "event", label: "EVENT", value: "Design Night" }],
@@ -356,40 +354,19 @@ function EventTicketBackgroundLayout({ passData }: { passData: PassDesign }) {
   );
 }
 
-function GenericLayout({
-  passData,
-  variant,
-}: {
-  passData: PassDesign;
-  variant: "generic" | "posterGeneric";
-}) {
-  const primaryField = fieldsOrFallback(passData.primaryFields, variant)[0];
+function GenericLayout({ passData }: { passData: PassDesign }) {
+  const primaryField = fieldsOrFallback(passData.primaryFields, "generic")[0];
 
   return (
-    <PassFrame passData={passData} variant={variant}>
+    <PassFrame passData={passData} variant="generic">
       <PassHeader passData={passData} />
-      {variant === "posterGeneric" ? (
+      <section className="wallet-generic-primary">
+        <FieldView className="wallet-generic-primary-field" field={primaryField} />
         <ImagePlaceholder
-          className="wallet-poster-placeholder"
+          className="wallet-thumbnail-placeholder"
           image={passData.images?.thumbnail}
           label="Thumbnail"
         />
-      ) : null}
-      <section
-        className={
-          variant === "posterGeneric"
-            ? "wallet-generic-primary wallet-poster-primary"
-            : "wallet-generic-primary"
-        }
-      >
-        <FieldView className="wallet-generic-primary-field" field={primaryField} />
-        {variant === "generic" ? (
-          <ImagePlaceholder
-            className="wallet-thumbnail-placeholder"
-            image={passData.images?.thumbnail}
-            label="Thumbnail"
-          />
-        ) : null}
       </section>
       <FieldGrid
         className="wallet-combined-row"
@@ -444,5 +421,5 @@ export function WalletPassCard({ passData, variant }: WalletPassCardProps) {
     return <StoreCardLayout passData={passData} />;
   }
 
-  return <GenericLayout passData={passData} variant={variant} />;
+  return <GenericLayout passData={passData} />;
 }

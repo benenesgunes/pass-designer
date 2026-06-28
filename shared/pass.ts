@@ -1,7 +1,6 @@
 export const PASS_TYPES = [
   "boardingPass",
   "generic",
-  "posterGeneric",
   "coupon",
   "eventTicketStrip",
   "eventTicketBackground",
@@ -42,7 +41,6 @@ export const PASS_FIELD_LIMITS_BY_TYPE: Record<PassType, PassFieldLimits> = {
     backFields: 5,
   },
   generic: PASS_FIELD_LIMITS,
-  posterGeneric: PASS_FIELD_LIMITS,
   coupon: PASS_FIELD_LIMITS,
   eventTicketStrip: {
     headerFields: 3,
@@ -101,7 +99,6 @@ export type PassImageKey = (typeof PASS_IMAGE_KEYS)[number];
 export const PASS_IMAGES_BY_TYPE: Record<PassType, PassImageKey[]> = {
   boardingPass: ["logo", "icon", "footer"],
   generic: ["logo", "icon", "thumbnail"],
-  posterGeneric: ["logo", "icon", "thumbnail"],
   coupon: ["logo", "icon", "strip"],
   eventTicketStrip: ["logo", "icon", "strip"],
   eventTicketBackground: ["logo", "icon", "background", "thumbnail"],
@@ -190,13 +187,6 @@ export const DEFAULT_PASS_FIELDS_BY_TYPE: Record<PassType, PassFieldGroups> = {
     primaryFields: [{ key: "name", label: "NAME", value: "Enes" }],
     secondaryFields: [{ key: "member", label: "MEMBER", value: "Since 2026" }],
     auxiliaryFields: [],
-    backFields: [],
-  },
-  posterGeneric: {
-    headerFields: [{ key: "status", label: "STATUS", value: "Active" }],
-    primaryFields: [{ key: "member", label: "MEMBER", value: "Enes" }],
-    secondaryFields: [{ key: "access", label: "ACCESS", value: "Studio" }],
-    auxiliaryFields: [{ key: "level", label: "LEVEL", value: "Studio" }],
     backFields: [],
   },
   coupon: {

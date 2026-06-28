@@ -5,7 +5,6 @@ import { PASS_TYPES, type PassType } from "@/lib/pass";
 const passTypeLabels: Record<PassType, string> = {
   boardingPass: "Boarding",
   generic: "Generic",
-  posterGeneric: "Poster Generic",
   coupon: "Coupon",
   eventTicketStrip: "Event (with a strip image)",
   eventTicketBackground: "Event (with a background image)",
@@ -15,7 +14,6 @@ const passTypeLabels: Record<PassType, string> = {
 const passTypeDescriptions: Record<PassType, string> = {
   boardingPass: "Travel layout with origin, destination, footer, and barcode.",
   generic: "A flexible card for simple records.",
-  posterGeneric: "A visual generic pass with a poster-style image area.",
   coupon: "Offer-focused fields and redemption details.",
   eventTicketStrip: "Uses a strip image and excludes background and thumbnail images.",
   eventTicketBackground: "Uses a full pass background image and can include a thumbnail.",

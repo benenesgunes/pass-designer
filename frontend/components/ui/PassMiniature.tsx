@@ -3,7 +3,6 @@ import type { PassType } from "@/lib/pass";
 const passTypeAccent: Record<PassType, string> = {
   boardingPass: "#007aff",
   generic: "#0066cc",
-  posterGeneric: "#ff375f",
   coupon: "#34c759",
   eventTicketStrip: "#ff9f0a",
   eventTicketBackground: "#ffcc00",
