@@ -4,9 +4,11 @@ import { EmailSubmitPanel } from "@/components/designer/EmailSubmitPanel";
 import { FieldEditor } from "@/components/designer/FieldEditor";
 import { GeneralInfoControls } from "@/components/designer/GeneralInfoControls";
 import { PassTypeSelector } from "@/components/designer/PassTypeSelector";
+import { BoardingPassPreview } from "@/components/preview/BoardingPassPreview";
 import { CouponPassPreview } from "@/components/preview/CouponPassPreview";
 import { EventTicketPassPreview } from "@/components/preview/EventTicketPassPreview";
 import { GenericPassPreview } from "@/components/preview/GenericPassPreview";
+import { PosterGenericPassPreview } from "@/components/preview/PosterGenericPassPreview";
 import { StoreCardPassPreview } from "@/components/preview/StoreCardPassPreview";
 import { AppHeader } from "@/components/ui/AppHeader";
 import { PassMiniature } from "@/components/ui/PassMiniature";
@@ -18,7 +20,9 @@ import {
 } from "@/lib/pass";
 
 const previewByType = {
+  boardingPass: BoardingPassPreview,
   generic: GenericPassPreview,
+  posterGeneric: PosterGenericPassPreview,
   coupon: CouponPassPreview,
   eventTicket: EventTicketPassPreview,
   storeCard: StoreCardPassPreview,
@@ -134,7 +138,7 @@ export default function ComponentsPage() {
         </section>
 
         <section className="section-block">
-          <h2 className="section-title">Preview Placeholders</h2>
+          <h2 className="section-title">Pass Previews</h2>
           <div className="mt-6 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
             {PASS_TYPES.map((passType) => {
               const Preview = previewByType[passType];

@@ -11,12 +11,15 @@ import { PassTypeSelector } from "@/components/designer/PassTypeSelector";
 import { PassPreview } from "@/components/preview/PassPreview";
 import {
   DEFAULT_PASS_DESIGN,
-  PASS_FIELD_LIMITS,
+  getDefaultFieldsForPassType,
+  getPassFieldLimits,
   type PassDesign,
+  type PassType,
 } from "@/lib/pass";
 
 export function DesignerWorkspace() {
   const [passData, setPassData] = useState<PassDesign>(DEFAULT_PASS_DESIGN);
+  const fieldLimits = getPassFieldLimits(passData.passType);
 
   function updatePassData<K extends keyof PassDesign>(
     key: K,
@@ -28,12 +31,20 @@ export function DesignerWorkspace() {
     }));
   }
 
+  function updatePassType(passType: PassType) {
+    setPassData((prev) => ({
+      ...prev,
+      passType,
+      ...getDefaultFieldsForPassType(passType),
+    }));
+  }
+
   return (
     <div className="designer-grid">
       <aside className="designer-sidebar-left">
         <PanelSection title="Pass Type">
           <PassTypeSelector
-            onChange={(passType) => updatePassData("passType", passType)}
+            onChange={updatePassType}
             value={passData.passType}
           />
         </PanelSection>
@@ -60,25 +71,25 @@ export function DesignerWorkspace() {
           <div className="field-stack">
             <FieldEditor
               fields={passData.primaryFields}
-              maxFields={PASS_FIELD_LIMITS.primaryFields}
+              maxFields={fieldLimits.primaryFields}
               onChange={(fields) => updatePassData("primaryFields", fields)}
               title="Primary Fields"
             />
             <FieldEditor
               fields={passData.secondaryFields}
-              maxFields={PASS_FIELD_LIMITS.secondaryFields}
+              maxFields={fieldLimits.secondaryFields}
               onChange={(fields) => updatePassData("secondaryFields", fields)}
               title="Secondary Fields"
             />
             <FieldEditor
               fields={passData.auxiliaryFields}
-              maxFields={PASS_FIELD_LIMITS.auxiliaryFields}
+              maxFields={fieldLimits.auxiliaryFields}
               onChange={(fields) => updatePassData("auxiliaryFields", fields)}
               title="Auxiliary Fields"
             />
             <FieldEditor
               fields={passData.backFields}
-              maxFields={PASS_FIELD_LIMITS.backFields}
+              maxFields={fieldLimits.backFields}
               onChange={(fields) => updatePassData("backFields", fields)}
               title="Back Fields"
             />

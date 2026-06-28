@@ -424,43 +424,48 @@ a {
   }
 
   .wallet-pass-header {
-    @apply flex items-start justify-between gap-4 border-b pb-4;
+    @apply grid grid-cols-[42px_1fr_auto] items-center gap-3 border-b pb-4;
     border-color: color-mix(in srgb, var(--pass-label) 32%, transparent);
   }
 
-  .wallet-logo-text {
-    @apply text-sm font-semibold;
-  }
-
-  .wallet-organization {
-    @apply mt-1 text-xs;
+  .wallet-logo-placeholder {
+    @apply grid h-10 w-10 place-items-center rounded-md border text-[10px] font-medium;
+    border-color: color-mix(in srgb, var(--pass-label) 38%, transparent);
+    background: color-mix(in srgb, var(--pass-fg) 13%, transparent);
     color: var(--pass-label);
   }
 
-  .wallet-pass-type-pill {
-    @apply shrink-0 rounded-md px-2 py-1 text-xs font-medium;
-    background: color-mix(in srgb, var(--pass-fg) 14%, transparent);
-  }
-
-  .wallet-pass-content {
-    @apply grid flex-1 content-start gap-4 py-5;
-  }
-
-  .wallet-field-group {
+  .wallet-logo-copy {
     @apply min-w-0;
   }
 
-  .wallet-group-title {
-    @apply mb-2 text-xs font-medium;
+  .wallet-logo-text {
+    @apply truncate text-sm font-semibold;
+  }
+
+  .wallet-organization {
+    @apply mt-0.5 truncate text-xs;
     color: var(--pass-label);
   }
 
-  .wallet-field-grid {
-    @apply grid grid-cols-2 gap-3;
+  .wallet-header-field {
+    @apply min-w-14 text-right;
   }
 
-  .wallet-field-group-primary .wallet-field-grid {
-    @apply grid-cols-1;
+  .wallet-header-field span {
+    @apply block truncate text-[10px] font-medium uppercase;
+    color: var(--pass-label);
+  }
+
+  .wallet-header-field strong {
+    @apply block truncate text-sm font-semibold;
+  }
+
+  .wallet-image-placeholder {
+    @apply grid place-items-center rounded-md border border-dashed px-3 text-xs font-medium;
+    border-color: color-mix(in srgb, var(--pass-label) 42%, transparent);
+    background: color-mix(in srgb, var(--pass-fg) 11%, transparent);
+    color: var(--pass-label);
   }
 
   .wallet-field {
@@ -468,38 +473,190 @@ a {
   }
 
   .wallet-field-label {
-    @apply truncate text-xs font-medium uppercase;
+    @apply truncate text-[10px] font-semibold uppercase;
     color: var(--pass-label);
   }
 
   .wallet-field-value {
-    @apply mt-1 truncate text-base font-semibold;
+    @apply mt-0.5 truncate text-base font-semibold;
   }
 
-  .wallet-empty-field {
-    @apply rounded-md border px-3 py-2 text-xs;
+  .wallet-field-grid {
+    @apply grid grid-cols-2 gap-3;
+  }
+
+  .wallet-boarding-route {
+    @apply grid grid-cols-[1fr_32px_1fr] items-center gap-3 py-5;
+  }
+
+  .wallet-route-arrow {
+    @apply text-center text-3xl leading-none opacity-40;
+  }
+
+  .wallet-route-field .wallet-field-value {
+    @apply text-4xl leading-none;
+  }
+
+  .wallet-route-field-to {
+    @apply text-right;
+  }
+  
+  .wallet-route-field-to .wallet-field-value {
+    @apply text-4xl leading-none text-right;
+  }
+
+  .wallet-auxiliary-row,
+  .wallet-secondary-row,
+  .wallet-combined-row {
+    @apply mb-4;
+  }
+
+  .wallet-footer-placeholder {
+    @apply mt-auto h-9;
+  }
+
+  .wallet-strip-section {
+    @apply relative my-5 overflow-hidden rounded-md;
+  }
+
+  .wallet-strip-placeholder {
+    @apply h-36 w-full;
+  }
+
+  .wallet-strip-fields {
+    @apply absolute inset-0 grid content-center p-4;
+  }
+
+  .wallet-primary-strip-field .wallet-field-value,
+  .wallet-store-primary .wallet-field-value {
+    @apply text-3xl leading-tight;
+  }
+
+  .wallet-event-hero {
+    @apply relative my-5 min-h-40 overflow-hidden rounded-md;
+  }
+
+  .wallet-background-placeholder {
+    @apply absolute inset-0 rounded-none;
+  }
+
+  .wallet-thumbnail-placeholder {
+    @apply h-32;
+  }
+
+  .wallet-event-hero .wallet-thumbnail-placeholder {
+    @apply absolute right-3 top-3 h-28 w-24;
+  }
+
+  .wallet-event-primary {
+    @apply absolute bottom-4 left-4 right-32;
+  }
+
+  .wallet-event-primary .wallet-field-value {
+    @apply text-2xl leading-tight;
+  }
+
+  .wallet-generic-primary {
+    @apply my-5 grid grid-cols-[1fr_96px] gap-4;
+  }
+
+  .wallet-generic-primary-field {
+    @apply rounded-md border p-3;
     border-color: color-mix(in srgb, var(--pass-label) 24%, transparent);
-    color: var(--pass-label);
+    background: color-mix(in srgb, var(--pass-fg) 8%, transparent);
   }
 
-  .wallet-field-group-primary .wallet-field-value {
-    @apply text-4xl leading-tight;
+  .wallet-generic-primary-field .wallet-field-value {
+    @apply text-3xl leading-tight;
   }
 
-  .wallet-offer-band,
-  .wallet-store-strip {
-    @apply mt-4 rounded-md border px-4 py-3 text-sm font-medium;
-    border-color: color-mix(in srgb, var(--pass-label) 36%, transparent);
-    background: color-mix(in srgb, var(--pass-fg) 10%, transparent);
+  .wallet-poster-placeholder {
+    @apply mt-5 h-36;
   }
 
-  .wallet-ticket-rule {
-    @apply mt-4 border-t border-dashed;
-    border-color: color-mix(in srgb, var(--pass-label) 42%, transparent);
+  .wallet-pass-poster-generic .wallet-generic-primary {
+    @apply my-4;
+  }
+
+  .wallet-pass-boarding {
+    @apply relative;
+  }
+
+  .wallet-pass-boarding::before,
+  .wallet-pass-boarding::after {
+    @apply absolute top-24 h-4 w-4 rounded-full bg-background content-[''];
+  }
+
+  .wallet-pass-boarding::before {
+    @apply -left-2;
+  }
+
+  .wallet-pass-boarding::after {
+    @apply -right-2;
+  }
+
+  .wallet-pass-coupon {
+    --coupon-tooth-height: 6px;
+    --coupon-tooth-width: 9px;
+
+    @apply relative overflow-visible rounded-none;
+    border-color: transparent;
+    margin-block: var(--coupon-tooth-height);
+  }
+
+  .wallet-pass-coupon::before,
+  .wallet-pass-coupon::after {
+    @apply pointer-events-none absolute left-0 right-0 content-[''];
+    height: var(--coupon-tooth-height);
+    background: var(--pass-bg);
+    mask-repeat: repeat-x;
+    mask-size: var(--coupon-tooth-width) var(--coupon-tooth-height);
+    -webkit-mask-repeat: repeat-x;
+    -webkit-mask-size: var(--coupon-tooth-width) var(--coupon-tooth-height);
+  }
+
+  .wallet-pass-coupon::before {
+    top: calc(var(--coupon-tooth-height) * -1);
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 10 6%22%3E%3Cpath d=%22M0 6L5 0L10 6Z%22 fill=%22black%22/%3E%3C/svg%3E");
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 10 6%22%3E%3Cpath d=%22M0 6L5 0L10 6Z%22 fill=%22black%22/%3E%3C/svg%3E");
+  }
+
+  .wallet-pass-coupon::after {
+    bottom: calc(var(--coupon-tooth-height) * -1);
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 10 6%22%3E%3Cpath d=%22M0 0L5 6L10 0Z%22 fill=%22black%22/%3E%3C/svg%3E");
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 10 6%22%3E%3Cpath d=%22M0 0L5 6L10 0Z%22 fill=%22black%22/%3E%3C/svg%3E");
+  }
+
+  .wallet-pass-event-ticket {
+    @apply relative;
+  }
+
+  .wallet-pass-event-ticket::before {
+    @apply absolute left-1/2 top-0 h-10 w-20 -translate-x-1/2 rounded-b-full bg-background content-[''];
+  }
+
+  .wallet-pass-event-ticket .wallet-pass-header {
+    @apply pt-5;
+  }
+
+  .wallet-pass-store-card .wallet-strip-placeholder {
+    @apply h-36;
+  }
+
+  .wallet-pass-store-card .wallet-store-primary {
+    @apply absolute bottom-4 left-4 right-4;
   }
 
   .wallet-barcode-section {
-    @apply rounded-md bg-white p-3 text-center text-neutral-950;
+    @apply mt-auto rounded-md bg-white p-3 text-center text-neutral-950;
+  }
+
+  .wallet-barcode-square {
+    @apply mx-auto w-36;
+  }
+
+  .wallet-barcode-rectangular {
+    @apply w-full;
   }
 
   .wallet-qr-preview {
@@ -515,7 +672,7 @@ a {
   }
 
   .wallet-code-preview {
-    @apply mx-auto h-20 w-full max-w-56 rounded-md;
+    @apply mx-auto h-20 w-full max-w-64 rounded-md;
     background: repeating-linear-gradient(
       90deg,
       #111111 0 3px,
@@ -527,22 +684,6 @@ a {
 
   .wallet-barcode-text {
     @apply mt-2 truncate text-xs font-medium;
-  }
-
-  .wallet-pass-coupon .wallet-pass-header {
-    @apply border-b-0 pb-0;
-  }
-
-  .wallet-pass-coupon .wallet-pass-content {
-    @apply py-4;
-  }
-
-  .wallet-pass-event-ticket .wallet-pass-content {
-    @apply gap-5;
-  }
-
-  .wallet-pass-store-card .wallet-field-group-primary .wallet-field-value {
-    @apply text-3xl;
   }
 
   @media (min-width: 640px) {

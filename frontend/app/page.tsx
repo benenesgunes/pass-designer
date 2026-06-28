@@ -4,9 +4,17 @@ import { PassMiniature } from "@/components/ui/PassMiniature";
 import { PASS_TYPES, type PassType } from "@/lib/pass";
 
 const passTypeContent: Record<PassType, { title: string; copy: string }> = {
+  boardingPass: {
+    title: "Boarding Pass",
+    copy: "Travel passes with origin, destination, footer, and barcode zones.",
+  },
   generic: {
     title: "Generic",
     copy: "Simple records, confirmations, and lightweight identity passes.",
+  },
+  posterGeneric: {
+    title: "Poster Generic",
+    copy: "A generic pass preview with a large poster-style image placeholder.",
   },
   coupon: {
     title: "Coupon",

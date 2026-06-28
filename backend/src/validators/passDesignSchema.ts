@@ -3,6 +3,7 @@ import {
   BARCODE_FORMATS,
   PASS_FIELD_LIMITS,
   PASS_TYPES,
+  getPassFieldLimits,
   type CreatePassRequest,
   type CreatePassResponse,
   type PassDesign,
@@ -45,7 +46,9 @@ export const passImagesSchema = z
     logo: z.string().min(1).optional(),
     icon: z.string().min(1).optional(),
     strip: z.string().min(1).optional(),
+    background: z.string().min(1).optional(),
     thumbnail: z.string().min(1).optional(),
+    footer: z.string().min(1).optional(),
   })
   .partial();
 
@@ -62,18 +65,36 @@ export const passDesignSchema = z.object({
 
   primaryFields: z
     .array(passFieldSchema)
-    .max(PASS_FIELD_LIMITS.primaryFields),
+    .max(Math.max(...PASS_TYPES.map((passType) => getPassFieldLimits(passType).primaryFields))),
   secondaryFields: z
     .array(passFieldSchema)
-    .max(PASS_FIELD_LIMITS.secondaryFields),
+    .max(Math.max(...PASS_TYPES.map((passType) => getPassFieldLimits(passType).secondaryFields))),
   auxiliaryFields: z
     .array(passFieldSchema)
-    .max(PASS_FIELD_LIMITS.auxiliaryFields),
+    .max(Math.max(...PASS_TYPES.map((passType) => getPassFieldLimits(passType).auxiliaryFields))),
   backFields: z.array(passFieldSchema).max(PASS_FIELD_LIMITS.backFields),
 
   barcode: passBarcodeSchema,
 
   images: passImagesSchema.optional(),
+}).superRefine((design, ctx) => {
+  const limits = getPassFieldLimits(design.passType);
+  const fieldGroups = [
+    ["primaryFields", design.primaryFields, limits.primaryFields],
+    ["secondaryFields", design.secondaryFields, limits.secondaryFields],
+    ["auxiliaryFields", design.auxiliaryFields, limits.auxiliaryFields],
+    ["backFields", design.backFields, limits.backFields],
+  ] as const;
+
+  fieldGroups.forEach(([path, fields, maxFields]) => {
+    if (fields.length > maxFields) {
+      ctx.addIssue({
+        code: "custom",
+        message: `${path} can contain at most ${maxFields} fields for ${design.passType}.`,
+        path: [path],
+      });
+    }
+  });
 }) satisfies z.ZodType<PassDesign>;
 
 export const createPassRequestSchema = z.object({

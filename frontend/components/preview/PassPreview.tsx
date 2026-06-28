@@ -1,7 +1,9 @@
 import type { PassDesign } from "@/lib/pass";
+import { BoardingPassPreview } from "./BoardingPassPreview";
 import { CouponPassPreview } from "./CouponPassPreview";
 import { EventTicketPassPreview } from "./EventTicketPassPreview";
 import { GenericPassPreview } from "./GenericPassPreview";
+import { PosterGenericPassPreview } from "./PosterGenericPassPreview";
 import { StoreCardPassPreview } from "./StoreCardPassPreview";
 
 type PassPreviewProps = {
@@ -9,6 +11,14 @@ type PassPreviewProps = {
 };
 
 export function PassPreview({ passData }: PassPreviewProps) {
+  if (passData.passType === "boardingPass") {
+    return <BoardingPassPreview passData={passData} />;
+  }
+
+  if (passData.passType === "posterGeneric") {
+    return <PosterGenericPassPreview passData={passData} />;
+  }
+
   if (passData.passType === "coupon") {
     return <CouponPassPreview passData={passData} />;
   }
