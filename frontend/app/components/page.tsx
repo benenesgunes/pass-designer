@@ -3,6 +3,7 @@ import { ColorControls } from "@/components/designer/ColorControls";
 import { EmailSubmitPanel } from "@/components/designer/EmailSubmitPanel";
 import { FieldEditor } from "@/components/designer/FieldEditor";
 import { GeneralInfoControls } from "@/components/designer/GeneralInfoControls";
+import { ImageControls } from "@/components/designer/ImageControls";
 import { PassTypeSelector } from "@/components/designer/PassTypeSelector";
 import { BoardingPassPreview } from "@/components/preview/BoardingPassPreview";
 import { CouponPassPreview } from "@/components/preview/CouponPassPreview";
@@ -25,7 +26,8 @@ const previewByType = {
   generic: GenericPassPreview,
   posterGeneric: PosterGenericPassPreview,
   coupon: CouponPassPreview,
-  eventTicket: EventTicketPassPreview,
+  eventTicketStrip: EventTicketPassPreview,
+  eventTicketBackground: EventTicketPassPreview,
   storeCard: StoreCardPassPreview,
 } satisfies Record<PassType, typeof GenericPassPreview>;
 
@@ -104,6 +106,15 @@ export default function ComponentsPage() {
               <div className="reference-card-header">Colors</div>
               <div className="reference-card-body">
                 <ColorControls design={design} />
+              </div>
+            </div>
+            <div className="reference-card">
+              <div className="reference-card-header">Images</div>
+              <div className="reference-card-body">
+                <ImageControls
+                  images={design.images}
+                  passType={design.passType}
+                />
               </div>
             </div>
             <div className="reference-card lg:col-span-2">

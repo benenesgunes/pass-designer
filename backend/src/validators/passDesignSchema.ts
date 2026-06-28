@@ -2,8 +2,10 @@ import { z } from "zod";
 import {
   BARCODE_FORMATS,
   PASS_FIELD_LIMITS,
+  PASS_IMAGE_KEYS,
   PASS_TYPES,
   getPassFieldLimits,
+  getSupportedImagesForPassType,
   type CreatePassRequest,
   type CreatePassResponse,
   type PassDesign,
@@ -99,6 +101,20 @@ export const passDesignSchema = z.object({
       });
     }
   });
+
+  const supportedImages = new Set(getSupportedImagesForPassType(design.passType));
+  const images = design.images ?? {};
+
+  PASS_IMAGE_KEYS.forEach((imageKey) => {
+    if (images[imageKey] && !supportedImages.has(imageKey)) {
+      ctx.addIssue({
+        code: "custom",
+        message: `${imageKey} is not supported for ${design.passType}.`,
+        path: ["images", imageKey],
+      });
+    }
+  });
+
 }) satisfies z.ZodType<PassDesign>;
 
 export const createPassRequestSchema = z.object({

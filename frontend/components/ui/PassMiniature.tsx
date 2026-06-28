@@ -5,7 +5,8 @@ const passTypeAccent: Record<PassType, string> = {
   generic: "#0066cc",
   posterGeneric: "#ff375f",
   coupon: "#34c759",
-  eventTicket: "#ff9f0a",
+  eventTicketStrip: "#ff9f0a",
+  eventTicketBackground: "#ffcc00",
   storeCard: "#af52de",
 };
 

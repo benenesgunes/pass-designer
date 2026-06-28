@@ -6,11 +6,13 @@ import { ColorControls } from "@/components/designer/ColorControls";
 import { EmailSubmitPanel } from "@/components/designer/EmailSubmitPanel";
 import { FieldEditor } from "@/components/designer/FieldEditor";
 import { GeneralInfoControls } from "@/components/designer/GeneralInfoControls";
+import { ImageControls } from "@/components/designer/ImageControls";
 import { PanelSection } from "@/components/designer/PanelSection";
 import { PassTypeSelector } from "@/components/designer/PassTypeSelector";
 import { PassPreview } from "@/components/preview/PassPreview";
 import {
   DEFAULT_PASS_DESIGN,
+  cleanPassImagesForPassType,
   getDefaultFieldsForPassType,
   getPassFieldLimits,
   type PassDesign,
@@ -35,6 +37,7 @@ export function DesignerWorkspace() {
     setPassData((prev) => ({
       ...prev,
       passType,
+      images: cleanPassImagesForPassType(passType, prev.images),
       ...getDefaultFieldsForPassType(passType),
     }));
   }
@@ -58,6 +61,13 @@ export function DesignerWorkspace() {
           <ColorControls
             design={passData}
             onChange={(key, value) => updatePassData(key, value)}
+          />
+        </PanelSection>
+        <PanelSection title="Images">
+          <ImageControls
+            images={passData.images}
+            onChange={(images) => updatePassData("images", images)}
+            passType={passData.passType}
           />
         </PanelSection>
       </aside>

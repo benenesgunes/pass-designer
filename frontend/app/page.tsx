@@ -20,9 +20,13 @@ const passTypeContent: Record<PassType, { title: string; copy: string }> = {
     title: "Coupon",
     copy: "Offer-led passes with compact redemption details.",
   },
-  eventTicket: {
-    title: "Event Ticket",
-    copy: "Admission passes for dates, venues, and attendee details.",
+  eventTicketStrip: {
+    title: "Event Ticket Strip",
+    copy: "Admission passes built around a full-width strip image.",
+  },
+  eventTicketBackground: {
+    title: "Event Ticket Background",
+    copy: "Admission passes with a full background image and optional thumbnail.",
   },
   storeCard: {
     title: "Store Card",

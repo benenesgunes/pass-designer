@@ -1,4 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
+import Image from "next/image";
 import type { PassBarcode, PassDesign, PassField, PassType } from "@/lib/pass";
 import { Plane } from "lucide-react";
 
@@ -12,7 +13,8 @@ const passTypeClasses: Record<PassType, string> = {
   generic: "wallet-pass-generic",
   posterGeneric: "wallet-pass-poster-generic",
   coupon: "wallet-pass-coupon",
-  eventTicket: "wallet-pass-event-ticket",
+  eventTicketStrip: "wallet-pass-event-strip",
+  eventTicketBackground: "wallet-pass-event-background",
   storeCard: "wallet-pass-store-card",
 };
 
@@ -29,7 +31,8 @@ const fallbackPrimary: Record<PassType, PassField[]> = {
   generic: [{ key: "name", label: "NAME", value: "Enes" }],
   posterGeneric: [{ key: "member", label: "MEMBER", value: "Enes" }],
   coupon: [{ key: "offer", label: "OFFER", value: "20% Off" }],
-  eventTicket: [{ key: "event", label: "EVENT", value: "Design Night" }],
+  eventTicketStrip: [{ key: "event", label: "EVENT", value: "Design Night" }],
+  eventTicketBackground: [{ key: "event", label: "EVENT", value: "Design Night" }],
   storeCard: [{ key: "balance", label: "BALANCE", value: "$25.00" }],
 };
 
@@ -69,7 +72,20 @@ function PassHeader({
 
   return (
     <header className="wallet-pass-header">
-      <div className="wallet-logo-placeholder">Logo</div>
+      <div className="wallet-logo-placeholder">
+        {passData.images?.logo ? (
+          <Image
+            alt=""
+            className="wallet-logo-image"
+            fill
+            sizes="40px"
+            src={passData.images.logo}
+            unoptimized
+          />
+        ) : (
+          "Logo"
+        )}
+      </div>
       <div className="wallet-logo-copy">
         <p className="wallet-logo-text">{passData.logoText}</p>
         <p className="wallet-organization">{passData.organizationName}</p>
@@ -87,12 +103,35 @@ function PassHeader({
 
 function ImagePlaceholder({
   className = "",
+  image,
   label,
+  objectFit = "cover",
 }: {
   className?: string;
+  image?: string;
   label: string;
+  objectFit?: "contain" | "cover";
 }) {
-  return <div className={`wallet-image-placeholder ${className}`}>{label}</div>;
+  return (
+    <div className={`wallet-image-placeholder ${className}`}>
+      {image ? (
+        <Image
+          alt=""
+          className={
+            objectFit === "contain"
+              ? "wallet-image wallet-image-contain"
+              : "wallet-image"
+          }
+          fill
+          sizes="360px"
+          src={image}
+          unoptimized
+        />
+      ) : (
+        label
+      )}
+    </div>
+  );
 }
 
 function FieldView({
@@ -176,10 +215,19 @@ function PassFrame({
   passData: PassDesign;
   variant: PassType;
 }) {
+  const backgroundImage =
+    variant === "eventTicketBackground" ? passData.images?.background : undefined;
   const cardStyle = {
     "--pass-bg": safeHexColor(passData.backgroundColor, "#1f2937"),
     "--pass-fg": safeHexColor(passData.foregroundColor, "#ffffff"),
     "--pass-label": safeHexColor(passData.labelColor, "#d1d5db"),
+    ...(backgroundImage
+      ? {
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+        }
+      : {}),
   } as CSSProperties;
 
   return (
@@ -216,7 +264,11 @@ function BoardingPassLayout({ passData }: { passData: PassDesign }) {
         className="wallet-secondary-row"
         fields={passData.secondaryFields}
       />
-      <ImagePlaceholder className="wallet-footer-placeholder" label="Footer" />
+      <ImagePlaceholder
+        className="wallet-footer-placeholder"
+        image={passData.images?.footer}
+        label="Footer"
+      />
       <BarcodePreview barcode={passData.barcode} />
     </PassFrame>
   );
@@ -227,7 +279,11 @@ function CouponLayout({ passData }: { passData: PassDesign }) {
     <PassFrame passData={passData} variant="coupon">
       <PassHeader passData={passData} />
       <section className="wallet-strip-section">
-        <ImagePlaceholder className="wallet-strip-placeholder" label="Strip" />
+        <ImagePlaceholder
+          className="wallet-strip-placeholder"
+          image={passData.images?.strip}
+          label="Strip"
+        />
         <div className="wallet-strip-fields">
           {fieldsOrFallback(passData.primaryFields, "coupon").map((field, index) => (
             <FieldView
@@ -247,22 +303,51 @@ function CouponLayout({ passData }: { passData: PassDesign }) {
   );
 }
 
-function EventTicketLayout({ passData }: { passData: PassDesign }) {
-  const primaryField = fieldsOrFallback(passData.primaryFields, "eventTicket")[0];
+function EventTicketStripLayout({ passData }: { passData: PassDesign }) {
+  const primaryField = fieldsOrFallback(passData.primaryFields, "eventTicketStrip")[0];
 
   return (
-    <PassFrame passData={passData} variant="eventTicket">
+    <PassFrame passData={passData} variant="eventTicketStrip">
       <PassHeader passData={passData} />
-      <section className="wallet-event-hero">
+      <section className="wallet-strip-section wallet-event-strip-section">
         <ImagePlaceholder
-          className="wallet-background-placeholder"
-          label="Background"
+          className="wallet-strip-placeholder"
+          image={passData.images?.strip}
+          label="Strip"
+        />
+        <div className="wallet-strip-fields">
+          <FieldView
+            className="wallet-primary-strip-field"
+            field={primaryField}
+          />
+        </div>
+      </section>
+      <FieldGrid className="wallet-secondary-row" fields={passData.secondaryFields} />
+      <FieldGrid className="wallet-auxiliary-row" fields={passData.auxiliaryFields} />
+      <BarcodePreview barcode={passData.barcode} />
+    </PassFrame>
+  );
+}
+
+function EventTicketBackgroundLayout({ passData }: { passData: PassDesign }) {
+  const primaryField = fieldsOrFallback(
+    passData.primaryFields,
+    "eventTicketBackground",
+  )[0];
+
+  return (
+    <PassFrame passData={passData} variant="eventTicketBackground">
+      <PassHeader passData={passData} />
+      <section className="wallet-event-background-primary">
+        <FieldView
+          className="wallet-event-background-primary-field"
+          field={primaryField}
         />
         <ImagePlaceholder
           className="wallet-thumbnail-placeholder"
+          image={passData.images?.thumbnail}
           label="Thumbnail"
         />
-        <FieldView className="wallet-event-primary" field={primaryField} />
       </section>
       <FieldGrid className="wallet-secondary-row" fields={passData.secondaryFields} />
       <FieldGrid className="wallet-auxiliary-row" fields={passData.auxiliaryFields} />
@@ -284,14 +369,27 @@ function GenericLayout({
     <PassFrame passData={passData} variant={variant}>
       <PassHeader passData={passData} />
       {variant === "posterGeneric" ? (
-        <ImagePlaceholder className="wallet-poster-placeholder" label="Poster" />
-      ) : null}
-      <section className="wallet-generic-primary">
-        <FieldView className="wallet-generic-primary-field" field={primaryField} />
         <ImagePlaceholder
-          className="wallet-thumbnail-placeholder"
+          className="wallet-poster-placeholder"
+          image={passData.images?.thumbnail}
           label="Thumbnail"
         />
+      ) : null}
+      <section
+        className={
+          variant === "posterGeneric"
+            ? "wallet-generic-primary wallet-poster-primary"
+            : "wallet-generic-primary"
+        }
+      >
+        <FieldView className="wallet-generic-primary-field" field={primaryField} />
+        {variant === "generic" ? (
+          <ImagePlaceholder
+            className="wallet-thumbnail-placeholder"
+            image={passData.images?.thumbnail}
+            label="Thumbnail"
+          />
+        ) : null}
       </section>
       <FieldGrid
         className="wallet-combined-row"
@@ -309,7 +407,11 @@ function StoreCardLayout({ passData }: { passData: PassDesign }) {
     <PassFrame passData={passData} variant="storeCard">
       <PassHeader passData={passData} />
       <section className="wallet-strip-section">
-        <ImagePlaceholder className="wallet-strip-placeholder" label="Strip" />
+        <ImagePlaceholder
+          className="wallet-strip-placeholder"
+          image={passData.images?.strip}
+          label="Strip"
+        />
         <FieldView className="wallet-store-primary" field={primaryField} />
       </section>
       <FieldGrid
@@ -330,8 +432,12 @@ export function WalletPassCard({ passData, variant }: WalletPassCardProps) {
     return <CouponLayout passData={passData} />;
   }
 
-  if (variant === "eventTicket") {
-    return <EventTicketLayout passData={passData} />;
+  if (variant === "eventTicketStrip") {
+    return <EventTicketStripLayout passData={passData} />;
+  }
+
+  if (variant === "eventTicketBackground") {
+    return <EventTicketBackgroundLayout passData={passData} />;
   }
 
   if (variant === "storeCard") {

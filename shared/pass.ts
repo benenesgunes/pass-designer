@@ -3,7 +3,8 @@ export const PASS_TYPES = [
   "generic",
   "posterGeneric",
   "coupon",
-  "eventTicket",
+  "eventTicketStrip",
+  "eventTicketBackground",
   "storeCard",
 ] as const;
 
@@ -43,7 +44,14 @@ export const PASS_FIELD_LIMITS_BY_TYPE: Record<PassType, PassFieldLimits> = {
   generic: PASS_FIELD_LIMITS,
   posterGeneric: PASS_FIELD_LIMITS,
   coupon: PASS_FIELD_LIMITS,
-  eventTicket: {
+  eventTicketStrip: {
+    headerFields: 3,
+    primaryFields: 1,
+    secondaryFields: 4,
+    auxiliaryFields: 4,
+    backFields: 5,
+  },
+  eventTicketBackground: {
     headerFields: 3,
     primaryFields: 1,
     secondaryFields: 4,
@@ -78,6 +86,53 @@ export type PassImages = {
   thumbnail?: string;
   footer?: string;
 };
+
+export const PASS_IMAGE_KEYS = [
+  "logo",
+  "icon",
+  "strip",
+  "background",
+  "thumbnail",
+  "footer",
+] as const;
+
+export type PassImageKey = (typeof PASS_IMAGE_KEYS)[number];
+
+export const PASS_IMAGES_BY_TYPE: Record<PassType, PassImageKey[]> = {
+  boardingPass: ["logo", "icon", "footer"],
+  generic: ["logo", "icon", "thumbnail"],
+  posterGeneric: ["logo", "icon", "thumbnail"],
+  coupon: ["logo", "icon", "strip"],
+  eventTicketStrip: ["logo", "icon", "strip"],
+  eventTicketBackground: ["logo", "icon", "background", "thumbnail"],
+  storeCard: ["logo", "icon", "strip"],
+};
+
+export function getSupportedImagesForPassType(passType: PassType): PassImageKey[] {
+  return PASS_IMAGES_BY_TYPE[passType];
+}
+
+export function cleanPassImagesForPassType(
+  passType: PassType,
+  images?: PassImages,
+): PassImages | undefined {
+  if (!images) {
+    return undefined;
+  }
+
+  const supportedImages = new Set(getSupportedImagesForPassType(passType));
+  const nextImages: PassImages = {};
+
+  PASS_IMAGE_KEYS.forEach((imageKey) => {
+    const image = images[imageKey];
+
+    if (image && supportedImages.has(imageKey)) {
+      nextImages[imageKey] = image;
+    }
+  });
+
+  return Object.keys(nextImages).length > 0 ? nextImages : undefined;
+}
 
 export type PassDesign = {
   passType: PassType;
@@ -151,7 +206,17 @@ export const DEFAULT_PASS_FIELDS_BY_TYPE: Record<PassType, PassFieldGroups> = {
     auxiliaryFields: [],
     backFields: [],
   },
-  eventTicket: {
+  eventTicketStrip: {
+    headerFields: [
+      { key: "date", label: "DATE", value: "Jul 21" },
+      { key: "time", label: "TIME", value: "8:00 PM" },
+    ],
+    primaryFields: [{ key: "event", label: "EVENT", value: "Design Night" }],
+    secondaryFields: [{ key: "venue", label: "VENUE", value: "Studio A" }],
+    auxiliaryFields: [{ key: "section", label: "SECTION", value: "A" }],
+    backFields: [],
+  },
+  eventTicketBackground: {
     headerFields: [
       { key: "date", label: "DATE", value: "Jul 21" },
       { key: "time", label: "TIME", value: "8:00 PM" },

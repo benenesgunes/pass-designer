@@ -7,7 +7,8 @@ const passTypeLabels: Record<PassType, string> = {
   generic: "Generic",
   posterGeneric: "Poster Generic",
   coupon: "Coupon",
-  eventTicket: "Event",
+  eventTicketStrip: "Event (with a strip image)",
+  eventTicketBackground: "Event (with a background image)",
   storeCard: "Store",
 };
 
@@ -16,7 +17,8 @@ const passTypeDescriptions: Record<PassType, string> = {
   generic: "A flexible card for simple records.",
   posterGeneric: "A visual generic pass with a poster-style image area.",
   coupon: "Offer-focused fields and redemption details.",
-  eventTicket: "Date, venue, and admission details.",
+  eventTicketStrip: "Uses a strip image and excludes background and thumbnail images.",
+  eventTicketBackground: "Uses a full pass background image and can include a thumbnail.",
   storeCard: "Membership and loyalty pass structure.",
 };
 

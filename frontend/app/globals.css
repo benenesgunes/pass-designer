@@ -318,6 +318,57 @@ a {
     @apply grid grid-cols-[44px_1fr] gap-3;
   }
 
+  .image-control-list {
+    @apply grid gap-3;
+  }
+
+  .image-control-stack {
+    @apply grid gap-3;
+  }
+
+  .image-control-note {
+    @apply rounded-md border border-line bg-surface px-3 py-2 text-xs leading-5 text-muted;
+  }
+
+  .image-control-card {
+    @apply grid grid-cols-[48px_1fr_auto_auto] items-center gap-3 rounded-lg border border-line bg-surface p-2;
+  }
+
+  .image-control-preview {
+    @apply relative grid h-12 w-12 place-items-center overflow-hidden rounded-md border border-line bg-surface-soft text-muted;
+  }
+
+  .image-control-preview img {
+    @apply h-full w-full object-cover;
+  }
+
+  .image-control-copy {
+    @apply min-w-0;
+  }
+
+  .image-upload-button,
+  .image-remove-button {
+    @apply inline-flex h-8 cursor-pointer items-center justify-center rounded-md border border-line bg-surface px-2.5 text-xs font-medium transition-colors;
+  }
+
+  .image-upload-button {
+    @apply gap-1.5;
+  }
+
+  .image-upload-button:hover,
+  .image-remove-button:hover {
+    border-color: var(--line-strong);
+    background: var(--surface-soft);
+  }
+
+  .image-remove-button {
+    @apply w-8 px-0 text-muted;
+  }
+
+  .image-remove-button:hover {
+    color: var(--foreground);
+  }
+
   .radio-input {
     @apply mt-1 h-4 w-4;
     accent-color: var(--foreground);
@@ -526,10 +577,15 @@ a {
   }
 
   .wallet-logo-placeholder {
-    @apply grid h-10 w-10 place-items-center rounded-md border text-[10px] font-medium;
+    @apply relative grid h-10 w-10 place-items-center rounded-md border text-[10px] font-medium;
     border-color: color-mix(in srgb, var(--pass-label) 38%, transparent);
     background: color-mix(in srgb, var(--pass-fg) 13%, transparent);
     color: var(--pass-label);
+    overflow: hidden;
+  }
+
+  .wallet-logo-image {
+    @apply h-full w-full object-contain;
   }
 
   .wallet-logo-copy {
@@ -563,10 +619,18 @@ a {
   }
 
   .wallet-image-placeholder {
-    @apply grid place-items-center rounded-md border border-dashed px-3 text-xs font-medium;
+    @apply relative grid place-items-center overflow-hidden rounded-md border border-dashed px-3 text-xs font-medium;
     border-color: color-mix(in srgb, var(--pass-label) 42%, transparent);
     background: color-mix(in srgb, var(--pass-fg) 11%, transparent);
     color: var(--pass-label);
+  }
+
+  .wallet-image {
+    @apply h-full w-full object-cover;
+  }
+
+  .wallet-image-contain {
+    @apply object-contain;
   }
 
   .wallet-field {
@@ -633,28 +697,8 @@ a {
     @apply text-3xl leading-tight;
   }
 
-  .wallet-event-hero {
-    @apply relative my-5 min-h-40 overflow-hidden rounded-md;
-  }
-
-  .wallet-background-placeholder {
-    @apply absolute inset-0 rounded-none;
-  }
-
   .wallet-thumbnail-placeholder {
     @apply h-32;
-  }
-
-  .wallet-event-hero .wallet-thumbnail-placeholder {
-    @apply absolute right-3 top-3 h-28 w-24;
-  }
-
-  .wallet-event-primary {
-    @apply absolute bottom-4 left-4 right-32;
-  }
-
-  .wallet-event-primary .wallet-field-value {
-    @apply text-2xl leading-tight;
   }
 
   .wallet-generic-primary {
@@ -677,6 +721,10 @@ a {
 
   .wallet-pass-poster-generic .wallet-generic-primary {
     @apply my-4;
+  }
+
+  .wallet-poster-primary {
+    @apply grid-cols-1;
   }
 
   .wallet-pass-boarding {
@@ -728,16 +776,54 @@ a {
     -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 10 6%22%3E%3Cpath d=%22M0 0L5 6L10 0Z%22 fill=%22black%22/%3E%3C/svg%3E");
   }
 
-  .wallet-pass-event-ticket {
+  .wallet-pass-event-strip,
+  .wallet-pass-event-background {
     @apply relative;
   }
 
-  .wallet-pass-event-ticket::before {
-    @apply absolute left-1/2 top-0 h-10 w-20 -translate-x-1/2 rounded-b-full bg-background content-[''];
+  .wallet-pass-event-strip::before,
+  .wallet-pass-event-background::before {
+    @apply absolute left-1/2 top-0 z-[2] h-10 w-20 -translate-x-1/2 rounded-b-full bg-background content-[''];
   }
 
-  .wallet-pass-event-ticket .wallet-pass-header {
+  .wallet-pass-event-strip > *,
+  .wallet-pass-event-background > * {
+    @apply relative z-[1];
+  }
+
+  .wallet-pass-event-strip .wallet-pass-header,
+  .wallet-pass-event-background .wallet-pass-header {
     @apply pt-5;
+  }
+
+  .wallet-pass-event-background::after {
+    @apply pointer-events-none absolute inset-0 z-0 content-[''];
+    background: color-mix(in srgb, var(--pass-bg) 36%, transparent);
+  }
+
+  .wallet-event-strip-section {
+    @apply mb-5;
+  }
+
+  .wallet-event-background-primary {
+    @apply my-5 grid grid-cols-[1fr_96px] gap-3;
+  }
+
+  .wallet-event-background-primary-field {
+    @apply rounded-md border p-3;
+    border-color: color-mix(in srgb, var(--pass-label) 26%, transparent);
+    background: color-mix(in srgb, var(--pass-bg) 48%, transparent);
+  }
+
+  .wallet-event-background-primary-field .wallet-field-value {
+    @apply text-2xl leading-tight;
+  }
+
+  .wallet-pass-event-background .wallet-secondary-row,
+  .wallet-pass-event-background .wallet-auxiliary-row {
+    @apply rounded-md border p-3;
+    border-color: color-mix(in srgb, var(--pass-label) 22%, transparent);
+    background: color-mix(in srgb, var(--pass-bg) 42%, transparent);
   }
 
   .wallet-pass-store-card .wallet-strip-placeholder {

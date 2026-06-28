@@ -8,5 +8,5 @@ type EventTicketPassPreviewProps = {
 export function EventTicketPassPreview({
   passData,
 }: EventTicketPassPreviewProps) {
-  return <WalletPassCard passData={passData} variant="eventTicket" />;
+  return <WalletPassCard passData={passData} variant={passData.passType} />;
 }

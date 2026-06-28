@@ -23,7 +23,10 @@ export function PassPreview({ passData }: PassPreviewProps) {
     return <CouponPassPreview passData={passData} />;
   }
 
-  if (passData.passType === "eventTicket") {
+  if (
+    passData.passType === "eventTicketStrip" ||
+    passData.passType === "eventTicketBackground"
+  ) {
     return <EventTicketPassPreview passData={passData} />;
   }
 
