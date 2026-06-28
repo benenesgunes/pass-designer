@@ -51,16 +51,7 @@ function fieldsOrFallback(
   return visible.length > 0 ? visible : fallback;
 }
 
-function HeaderField({ field }: { field?: PassField }) {
-  if (!field) {
-    return (
-      <div className="wallet-header-field">
-        <span>TYPE</span>
-        <strong>PASS</strong>
-      </div>
-    );
-  }
-
+function HeaderField({ field }: { field: PassField }) {
   return (
     <div className="wallet-header-field">
       <span>{field.label || field.key}</span>
@@ -70,12 +61,12 @@ function HeaderField({ field }: { field?: PassField }) {
 }
 
 function PassHeader({
-  headerField,
   passData,
 }: {
-  headerField?: PassField;
   passData: PassDesign;
 }) {
+  const headerFields = visibleFields(passData.headerFields);
+
   return (
     <header className="wallet-pass-header">
       <div className="wallet-logo-placeholder">Logo</div>
@@ -83,7 +74,13 @@ function PassHeader({
         <p className="wallet-logo-text">{passData.logoText}</p>
         <p className="wallet-organization">{passData.organizationName}</p>
       </div>
-      <HeaderField field={headerField} />
+      {headerFields.length > 0 ? (
+        <div className="wallet-header-fields">
+          {headerFields.map((field, index) => (
+            <HeaderField field={field} key={`${field.key}-${index}`} />
+          ))}
+        </div>
+      ) : null}
     </header>
   );
 }
@@ -200,7 +197,7 @@ function BoardingPassLayout({ passData }: { passData: PassDesign }) {
 
   return (
     <PassFrame passData={passData} variant="boardingPass">
-      <PassHeader headerField={passData.secondaryFields[0]} passData={passData} />
+      <PassHeader passData={passData} />
       <section className="wallet-boarding-route">
         <FieldView className="wallet-route-field" field={primaryFields[0]} />
         <span aria-hidden className="wallet-route-arrow">
@@ -217,7 +214,7 @@ function BoardingPassLayout({ passData }: { passData: PassDesign }) {
       />
       <FieldGrid
         className="wallet-secondary-row"
-        fields={passData.secondaryFields.slice(1)}
+        fields={passData.secondaryFields}
       />
       <ImagePlaceholder className="wallet-footer-placeholder" label="Footer" />
       <BarcodePreview barcode={passData.barcode} />
@@ -228,7 +225,7 @@ function BoardingPassLayout({ passData }: { passData: PassDesign }) {
 function CouponLayout({ passData }: { passData: PassDesign }) {
   return (
     <PassFrame passData={passData} variant="coupon">
-      <PassHeader headerField={passData.secondaryFields[0]} passData={passData} />
+      <PassHeader passData={passData} />
       <section className="wallet-strip-section">
         <ImagePlaceholder className="wallet-strip-placeholder" label="Strip" />
         <div className="wallet-strip-fields">
@@ -243,7 +240,7 @@ function CouponLayout({ passData }: { passData: PassDesign }) {
       </section>
       <FieldGrid
         className="wallet-combined-row"
-        fields={[...passData.secondaryFields.slice(1), ...passData.auxiliaryFields]}
+        fields={[...passData.secondaryFields, ...passData.auxiliaryFields]}
       />
       <BarcodePreview barcode={passData.barcode} />
     </PassFrame>
@@ -255,7 +252,7 @@ function EventTicketLayout({ passData }: { passData: PassDesign }) {
 
   return (
     <PassFrame passData={passData} variant="eventTicket">
-      <PassHeader headerField={passData.secondaryFields[0]} passData={passData} />
+      <PassHeader passData={passData} />
       <section className="wallet-event-hero">
         <ImagePlaceholder
           className="wallet-background-placeholder"
@@ -285,7 +282,7 @@ function GenericLayout({
 
   return (
     <PassFrame passData={passData} variant={variant}>
-      <PassHeader headerField={passData.secondaryFields[0]} passData={passData} />
+      <PassHeader passData={passData} />
       {variant === "posterGeneric" ? (
         <ImagePlaceholder className="wallet-poster-placeholder" label="Poster" />
       ) : null}
@@ -298,7 +295,7 @@ function GenericLayout({
       </section>
       <FieldGrid
         className="wallet-combined-row"
-        fields={[...passData.secondaryFields.slice(1), ...passData.auxiliaryFields]}
+        fields={[...passData.secondaryFields, ...passData.auxiliaryFields]}
       />
       <BarcodePreview barcode={passData.barcode} />
     </PassFrame>
@@ -310,14 +307,14 @@ function StoreCardLayout({ passData }: { passData: PassDesign }) {
 
   return (
     <PassFrame passData={passData} variant="storeCard">
-      <PassHeader headerField={passData.secondaryFields[0]} passData={passData} />
+      <PassHeader passData={passData} />
       <section className="wallet-strip-section">
         <ImagePlaceholder className="wallet-strip-placeholder" label="Strip" />
         <FieldView className="wallet-store-primary" field={primaryField} />
       </section>
       <FieldGrid
         className="wallet-combined-row"
-        fields={[...passData.secondaryFields.slice(1), ...passData.auxiliaryFields]}
+        fields={[...passData.secondaryFields, ...passData.auxiliaryFields]}
       />
       <BarcodePreview barcode={passData.barcode} />
     </PassFrame>

@@ -369,7 +369,7 @@ a {
   }
 
   .preview-stage {
-    @apply grid min-h-[620px] place-items-center px-5 py-10;
+    @apply relative grid min-h-[620px] place-items-center px-5 py-10;
   }
 
   .field-stack {
@@ -543,6 +543,10 @@ a {
   .wallet-organization {
     @apply mt-0.5 truncate text-xs;
     color: var(--pass-label);
+  }
+
+  .wallet-header-fields {
+    @apply flex min-w-0 max-w-36 justify-end gap-3;
   }
 
   .wallet-header-field {
@@ -824,6 +828,16 @@ a {
 
     .designer-grid {
       grid-template-columns: 320px 1fr 360px;
+    }
+
+    .preview-stage {
+      @apply sticky top-12 h-[calc(100vh-48px)] min-h-0 overflow-hidden;
+      align-self: start;
+    }
+
+    .preview-stage > * {
+      @apply absolute left-1/2 top-1/2;
+      transform: translate(-50%, -50%);
     }
 
     .designer-sidebar-left {

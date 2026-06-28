@@ -16,6 +16,7 @@ import {
   DEFAULT_PASS_DESIGN,
   PASS_FIELD_LIMITS,
   PASS_TYPES,
+  getDefaultFieldsForPassType,
   type PassType,
 } from "@/lib/pass";
 
@@ -109,6 +110,11 @@ export default function ComponentsPage() {
               <div className="reference-card-header">Fields</div>
               <div className="grid gap-5 p-5">
                 <FieldEditor
+                  fields={design.headerFields}
+                  maxFields={PASS_FIELD_LIMITS.headerFields}
+                  title="Header Fields"
+                />
+                <FieldEditor
                   fields={design.primaryFields}
                   maxFields={PASS_FIELD_LIMITS.primaryFields}
                   title="Primary Fields"
@@ -142,7 +148,11 @@ export default function ComponentsPage() {
           <div className="mt-6 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
             {PASS_TYPES.map((passType) => {
               const Preview = previewByType[passType];
-              const passData = { ...design, passType };
+              const passData = {
+                ...design,
+                passType,
+                ...getDefaultFieldsForPassType(passType),
+              };
 
               return (
                 <div className="flex justify-center" key={passType}>

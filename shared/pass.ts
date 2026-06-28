@@ -17,6 +17,7 @@ export const BARCODE_FORMATS = [
 export type BarcodeFormat = (typeof BARCODE_FORMATS)[number];
 
 export const PASS_FIELD_LIMITS = {
+  headerFields: 3,
   primaryFields: 1,
   secondaryFields: 2,
   auxiliaryFields: 4,
@@ -24,6 +25,7 @@ export const PASS_FIELD_LIMITS = {
 } as const;
 
 export type PassFieldLimits = {
+  headerFields: number;
   primaryFields: number;
   secondaryFields: number;
   auxiliaryFields: number;
@@ -32,6 +34,7 @@ export type PassFieldLimits = {
 
 export const PASS_FIELD_LIMITS_BY_TYPE: Record<PassType, PassFieldLimits> = {
   boardingPass: {
+    headerFields: 3,
     primaryFields: 2,
     secondaryFields: 4,
     auxiliaryFields: 5,
@@ -41,6 +44,7 @@ export const PASS_FIELD_LIMITS_BY_TYPE: Record<PassType, PassFieldLimits> = {
   posterGeneric: PASS_FIELD_LIMITS,
   coupon: PASS_FIELD_LIMITS,
   eventTicket: {
+    headerFields: 3,
     primaryFields: 1,
     secondaryFields: 4,
     auxiliaryFields: 4,
@@ -86,6 +90,7 @@ export type PassDesign = {
   foregroundColor: string;
   labelColor: string;
 
+  headerFields: PassField[];
   primaryFields: PassField[];
   secondaryFields: PassField[];
   auxiliaryFields: PassField[];
@@ -98,18 +103,26 @@ export type PassDesign = {
 
 export type PassFieldGroups = Pick<
   PassDesign,
-  "primaryFields" | "secondaryFields" | "auxiliaryFields" | "backFields"
+  | "headerFields"
+  | "primaryFields"
+  | "secondaryFields"
+  | "auxiliaryFields"
+  | "backFields"
 >;
 
 export const DEFAULT_PASS_FIELDS_BY_TYPE: Record<PassType, PassFieldGroups> = {
   boardingPass: {
+    headerFields: [
+      { key: "flight", label: "FLIGHT", value: "PA 428" },
+      { key: "gate", label: "GATE", value: "B12" },
+    ],
     primaryFields: [
       { key: "from", label: "FROM", value: "SFO" },
       { key: "to", label: "TO", value: "LAX" },
     ],
     secondaryFields: [
-      { key: "flight", label: "FLIGHT", value: "PA 428" },
-      { key: "gate", label: "GATE", value: "B12" },
+      { key: "boarding", label: "BOARDING", value: "10:15 AM" },
+      { key: "terminal", label: "TERMINAL", value: "2" },
     ],
     auxiliaryFields: [
       { key: "seat", label: "SEAT", value: "14A" },
@@ -118,39 +131,41 @@ export const DEFAULT_PASS_FIELDS_BY_TYPE: Record<PassType, PassFieldGroups> = {
     backFields: [],
   },
   generic: {
+    headerFields: [{ key: "status", label: "STATUS", value: "Active" }],
     primaryFields: [{ key: "name", label: "NAME", value: "Enes" }],
-    secondaryFields: [{ key: "status", label: "STATUS", value: "Active" }],
+    secondaryFields: [{ key: "member", label: "MEMBER", value: "Since 2026" }],
     auxiliaryFields: [],
     backFields: [],
   },
   posterGeneric: {
+    headerFields: [{ key: "status", label: "STATUS", value: "Active" }],
     primaryFields: [{ key: "member", label: "MEMBER", value: "Enes" }],
-    secondaryFields: [{ key: "status", label: "STATUS", value: "Active" }],
+    secondaryFields: [{ key: "access", label: "ACCESS", value: "Studio" }],
     auxiliaryFields: [{ key: "level", label: "LEVEL", value: "Studio" }],
     backFields: [],
   },
   coupon: {
+    headerFields: [{ key: "code", label: "CODE", value: "SUMMER" }],
     primaryFields: [{ key: "offer", label: "OFFER", value: "20% Off" }],
-    secondaryFields: [
-      { key: "code", label: "CODE", value: "SUMMER" },
-      { key: "expires", label: "EXPIRES", value: "Today" },
-    ],
+    secondaryFields: [{ key: "expires", label: "EXPIRES", value: "Today" }],
     auxiliaryFields: [],
     backFields: [],
   },
   eventTicket: {
-    primaryFields: [{ key: "event", label: "EVENT", value: "Design Night" }],
-    secondaryFields: [
+    headerFields: [
       { key: "date", label: "DATE", value: "Jul 21" },
       { key: "time", label: "TIME", value: "8:00 PM" },
     ],
-    auxiliaryFields: [{ key: "venue", label: "VENUE", value: "Studio A" }],
+    primaryFields: [{ key: "event", label: "EVENT", value: "Design Night" }],
+    secondaryFields: [{ key: "venue", label: "VENUE", value: "Studio A" }],
+    auxiliaryFields: [{ key: "section", label: "SECTION", value: "A" }],
     backFields: [],
   },
   storeCard: {
+    headerFields: [{ key: "tier", label: "TIER", value: "Member" }],
     primaryFields: [{ key: "balance", label: "BALANCE", value: "$25.00" }],
-    secondaryFields: [{ key: "tier", label: "TIER", value: "Member" }],
-    auxiliaryFields: [{ key: "points", label: "POINTS", value: "1250" }],
+    secondaryFields: [{ key: "points", label: "POINTS", value: "1250" }],
+    auxiliaryFields: [{ key: "rewards", label: "REWARDS", value: "$5" }],
     backFields: [],
   },
 };
@@ -163,6 +178,7 @@ export function getDefaultFieldsForPassType(passType: PassType): PassFieldGroups
   const defaults = DEFAULT_PASS_FIELDS_BY_TYPE[passType];
 
   return {
+    headerFields: clonePassFields(defaults.headerFields),
     primaryFields: clonePassFields(defaults.primaryFields),
     secondaryFields: clonePassFields(defaults.secondaryFields),
     auxiliaryFields: clonePassFields(defaults.auxiliaryFields),

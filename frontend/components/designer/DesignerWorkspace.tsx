@@ -70,6 +70,12 @@ export function DesignerWorkspace() {
         <PanelSection title="Fields">
           <div className="field-stack">
             <FieldEditor
+              fields={passData.headerFields}
+              maxFields={fieldLimits.headerFields}
+              onChange={(fields) => updatePassData("headerFields", fields)}
+              title="Header Fields"
+            />
+            <FieldEditor
               fields={passData.primaryFields}
               maxFields={fieldLimits.primaryFields}
               onChange={(fields) => updatePassData("primaryFields", fields)}

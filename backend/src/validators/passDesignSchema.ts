@@ -63,6 +63,9 @@ export const passDesignSchema = z.object({
   foregroundColor: hexColorSchema,
   labelColor: hexColorSchema,
 
+  headerFields: z
+    .array(passFieldSchema)
+    .max(Math.max(...PASS_TYPES.map((passType) => getPassFieldLimits(passType).headerFields))),
   primaryFields: z
     .array(passFieldSchema)
     .max(Math.max(...PASS_TYPES.map((passType) => getPassFieldLimits(passType).primaryFields))),
@@ -80,6 +83,7 @@ export const passDesignSchema = z.object({
 }).superRefine((design, ctx) => {
   const limits = getPassFieldLimits(design.passType);
   const fieldGroups = [
+    ["headerFields", design.headerFields, limits.headerFields],
     ["primaryFields", design.primaryFields, limits.primaryFields],
     ["secondaryFields", design.secondaryFields, limits.secondaryFields],
     ["auxiliaryFields", design.auxiliaryFields, limits.auxiliaryFields],
