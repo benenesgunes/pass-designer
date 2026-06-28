@@ -15,7 +15,14 @@ const hexColorSchema = z
   .string()
   .regex(/^#[0-9a-fA-F]{6}$/, "Use a 6-digit hex color, for example #1f2937.");
 
-const nonEmptyTextSchema = z.string().trim().min(1);
+const nonEmptyTextSchema = z.string().trim().min(1, "Required");
+const passFieldGroupKeys = [
+  "headerFields",
+  "primaryFields",
+  "secondaryFields",
+  "auxiliaryFields",
+  "backFields",
+] as const;
 
 export const passFieldSchema = z.object({
   key: nonEmptyTextSchema.regex(
@@ -102,6 +109,23 @@ export const passDesignSchema = z.object({
     }
   });
 
+  const fieldKeys = new Set<string>();
+
+  passFieldGroupKeys.forEach((groupKey) => {
+    design[groupKey].forEach((field, index) => {
+      if (fieldKeys.has(field.key)) {
+        ctx.addIssue({
+          code: "custom",
+          message: `Field key "${field.key}" must be unique.`,
+          path: [groupKey, index, "key"],
+        });
+        return;
+      }
+
+      fieldKeys.add(field.key);
+    });
+  });
+
   const supportedImages = new Set(getSupportedImagesForPassType(design.passType));
   const images = design.images ?? {};
 
@@ -118,7 +142,7 @@ export const passDesignSchema = z.object({
 }) satisfies z.ZodType<PassDesign>;
 
 export const createPassRequestSchema = z.object({
-  email: z.string().trim().email(),
+  email: z.string().trim().email("Invalid email"),
   design: passDesignSchema,
 }) satisfies z.ZodType<CreatePassRequest>;
 
