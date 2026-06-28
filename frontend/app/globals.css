@@ -1,26 +1,419 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f5f5f7;
+  --foreground: #1d1d1f;
+  --surface: #ffffff;
+  --muted: #6e6e73;
+  --line: #d2d2d7;
+  --accent: #0066cc;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-surface: var(--surface);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --font-sans: Arial, Helvetica, sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, Helvetica, sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+a {
+  text-decoration: none;
+}
+
+::selection {
+  background: #b9d7f4;
+  color: #111111;
+}
+
+@layer components {
+  .site-header {
+    @apply sticky top-0 z-20 border-b border-line/80 backdrop-blur-xl;
+    background: color-mix(in srgb, var(--background) 85%, transparent);
+  }
+
+  .site-nav {
+    @apply mx-auto flex h-12 w-full max-w-7xl items-center justify-between px-5 text-sm;
+  }
+
+  .site-brand {
+    @apply font-medium;
+  }
+
+  .site-nav-list {
+    @apply flex items-center gap-5 text-muted;
+  }
+
+  .site-nav-link {
+    @apply transition-colors;
+  }
+
+  .site-nav-link:hover {
+    @apply text-foreground;
+  }
+
+  .page-container {
+    @apply mx-auto w-full max-w-7xl px-5;
+  }
+
+  .page-intro {
+    @apply max-w-3xl;
+  }
+
+  .eyebrow {
+    @apply text-sm font-medium text-muted;
+  }
+
+  .hero-title {
+    @apply text-5xl font-semibold leading-[1.05] text-foreground;
+  }
+
+  .page-title {
+    @apply text-4xl font-semibold;
+  }
+
+  .display-title {
+    @apply text-6xl font-semibold leading-none;
+  }
+
+  .section-title {
+    @apply text-2xl font-semibold;
+  }
+
+  .subsection-title {
+    @apply text-lg font-semibold;
+  }
+
+  .small-title {
+    @apply text-sm font-medium;
+  }
+
+  .body-lede {
+    @apply text-xl leading-8 text-muted;
+  }
+
+  .page-description {
+    @apply mt-5 text-lg leading-8 text-muted;
+  }
+
+  .body-copy {
+    @apply text-base leading-7 text-muted;
+  }
+
+  .card-copy {
+    @apply text-sm leading-6 text-muted;
+  }
+
+  .muted-label {
+    @apply text-muted;
+  }
+
+  .muted-caption {
+    @apply text-xs text-muted;
+  }
+
+  .section-block {
+    @apply mt-12 border-t border-line pt-8;
+  }
+
+  .hero-actions {
+    @apply mt-8 flex flex-col gap-3;
+  }
+
+  .home-hero {
+    @apply mx-auto grid w-full max-w-7xl gap-12 px-5 pb-16 pt-20;
+  }
+
+  .home-visual-stack {
+    @apply grid gap-3;
+  }
+
+  .home-visual-grid {
+    @apply grid grid-cols-3 gap-3;
+  }
+
+  .home-visual-tile {
+    @apply h-24 rounded-lg border border-line bg-white;
+  }
+
+  .pass-type-grid {
+    @apply mx-auto grid w-full max-w-7xl gap-4 px-5 pb-20;
+  }
+
+  .component-two-column-grid {
+    @apply mt-6 grid gap-6;
+  }
+
+  .component-card-grid {
+    @apply mt-6 grid gap-4;
+  }
+
+  .component-control-grid {
+    @apply mt-6 grid gap-4;
+  }
+
+  .component-preview-grid {
+    @apply mt-6 grid gap-6;
+  }
+
+  .btn-primary {
+    @apply inline-flex h-11 items-center justify-center rounded-md bg-neutral-950 px-5 text-sm font-medium text-white transition-colors;
+  }
+
+  .btn-primary:hover {
+    @apply bg-neutral-800;
+  }
+
+  .btn-secondary {
+    @apply inline-flex h-11 items-center justify-center rounded-md border border-line bg-white px-5 text-sm font-medium transition-colors;
+  }
+
+  .btn-secondary:hover {
+    @apply border-neutral-400;
+  }
+
+  .form-stack {
+    @apply grid gap-3;
+  }
+
+  .form-label {
+    @apply grid gap-2 text-sm;
+  }
+
+  .form-input {
+    @apply h-10 rounded-md border border-line bg-white px-3 text-sm outline-none transition-colors;
+  }
+
+  .form-input:focus {
+    @apply border-neutral-500;
+  }
+
+  .form-input-sm {
+    @apply h-9 min-w-0 rounded-md border border-line bg-white px-2 text-xs outline-none transition-colors;
+  }
+
+  .form-input-sm:focus {
+    @apply border-neutral-500;
+  }
+
+  .form-select {
+    @apply h-10 rounded-md border border-line bg-white px-3 outline-none transition-colors;
+  }
+
+  .form-select:focus {
+    @apply border-neutral-500;
+  }
+
+  .form-color-input {
+    @apply h-10 w-11 rounded-md border border-line bg-white p-1;
+  }
+
+  .color-input-row {
+    @apply grid grid-cols-[44px_1fr] gap-3;
+  }
+
+  .radio-input {
+    @apply mt-1 h-4 w-4 accent-black;
+  }
+
+  .checkbox-input {
+    @apply h-4 w-4 accent-black;
+  }
+
+  .choice-card {
+    @apply flex cursor-pointer items-start gap-3 rounded-lg border border-line bg-white p-3 transition-colors;
+  }
+
+  .choice-card:hover {
+    @apply border-neutral-400;
+  }
+
+  .toggle-card {
+    @apply flex items-center justify-between gap-4 rounded-lg border border-line bg-white px-3 py-2;
+  }
+
+  .choice-copy {
+    @apply text-xs leading-5 text-muted;
+  }
+
+  .panel-section {
+    @apply border-b border-line/70 px-5 py-5;
+  }
+
+  .panel-section:last-child {
+    @apply border-b-0;
+  }
+
+  .panel-title {
+    @apply mb-4 text-xs font-semibold uppercase text-muted;
+  }
+
+  .designer-grid {
+    @apply grid min-h-[calc(100vh-48px)] grid-cols-1;
+  }
+
+  .designer-sidebar-left {
+    @apply border-b border-line bg-background;
+  }
+
+  .designer-sidebar-right {
+    @apply border-t border-line bg-background;
+  }
+
+  .preview-stage {
+    @apply grid min-h-[620px] place-items-center px-5 py-10;
+  }
+
+  .field-stack {
+    @apply grid gap-5;
+  }
+
+  .field-editor-header {
+    @apply flex items-baseline justify-between gap-4;
+  }
+
+  .field-editor-row {
+    @apply grid grid-cols-[0.85fr_0.9fr_1.1fr] gap-2;
+  }
+
+  .reference-card {
+    @apply rounded-lg border border-line bg-background;
+  }
+
+  .reference-card-white {
+    @apply rounded-lg border border-line bg-white;
+  }
+
+  .reference-card-header {
+    @apply border-b border-line px-5 py-4 text-sm font-medium;
+  }
+
+  .reference-card-body {
+    @apply p-5;
+  }
+
+  .centered-preview {
+    @apply flex justify-center;
+  }
+
+  .pass-card-link {
+    @apply rounded-lg border border-line bg-white p-4 transition-colors;
+  }
+
+  .pass-card-link:hover {
+    @apply border-neutral-400;
+  }
+
+  .pass-card-action {
+    @apply mt-5 text-sm font-medium text-accent transition-colors;
+  }
+
+  .group:hover .pass-card-action {
+    @apply text-neutral-950;
+  }
+
+  .pass-miniature {
+    @apply relative h-36 w-full overflow-hidden rounded-lg border border-line bg-white;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+  }
+
+  .pass-miniature-body {
+    @apply space-y-4 p-5;
+  }
+
+  .preview-card {
+    @apply flex aspect-[9/14] w-full max-w-[360px] flex-col rounded-lg border border-line bg-white;
+    box-shadow: 0 28px 80px rgba(0, 0, 0, 0.08);
+  }
+
+  .preview-card-header {
+    @apply flex items-center justify-between border-b border-line/70 px-5 py-4;
+  }
+
+  .preview-card-body {
+    @apply grid flex-1 place-items-center px-8 text-center;
+  }
+
+  .preview-icon-placeholder {
+    @apply mx-auto mb-5 h-16 w-16 rounded-lg border border-line bg-neutral-50;
+  }
+
+  @media (min-width: 640px) {
+    .hero-title {
+      @apply text-7xl;
+    }
+
+    .page-title {
+      @apply text-6xl;
+    }
+
+    .hero-actions {
+      @apply flex-row;
+    }
+
+    .pass-type-grid,
+    .component-card-grid,
+    .component-preview-grid {
+      @apply grid-cols-2;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .home-hero {
+      grid-template-columns: 1fr 420px;
+      @apply items-center pt-24;
+    }
+
+    .component-two-column-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .component-card-grid,
+    .pass-type-grid {
+      @apply grid-cols-4;
+    }
+
+    .component-control-grid {
+      @apply grid-cols-3;
+    }
+
+    .designer-grid {
+      grid-template-columns: 320px 1fr 360px;
+    }
+
+    .designer-sidebar-left {
+      @apply border-b-0 border-r;
+    }
+
+    .designer-sidebar-right {
+      @apply border-l border-t-0;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .component-preview-grid {
+      @apply grid-cols-4;
+    }
+  }
 }

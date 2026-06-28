@@ -3,7 +3,7 @@ export {
   DEFAULT_PASS_DESIGN,
   PASS_FIELD_LIMITS,
   PASS_TYPES,
-} from "@shared/pass";
+} from "../../shared/pass";
 
 export type {
   BarcodeFormat,
@@ -14,4 +14,4 @@ export type {
   PassField,
   PassImages,
   PassType,
-} from "@shared/pass";
+} from "../../shared/pass";
