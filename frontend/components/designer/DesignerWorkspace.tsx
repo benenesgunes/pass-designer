@@ -57,7 +57,7 @@ export function DesignerWorkspace() {
 
       <aside className="designer-sidebar-right">
         <PanelSection title="Fields">
-          <div className="grid gap-5">
+          <div className="field-stack">
             <FieldEditor
               fields={passData.primaryFields}
               maxFields={PASS_FIELD_LIMITS.primaryFields}

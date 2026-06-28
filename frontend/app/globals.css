@@ -185,6 +185,10 @@ a {
     @apply bg-neutral-800;
   }
 
+  .btn-primary:disabled {
+    @apply cursor-not-allowed bg-neutral-400;
+  }
+
   .btn-secondary {
     @apply inline-flex h-11 items-center justify-center rounded-md border border-line bg-white px-5 text-sm font-medium transition-colors;
   }
@@ -290,11 +294,64 @@ a {
   }
 
   .field-editor-header {
-    @apply flex items-baseline justify-between gap-4;
+    @apply flex items-center justify-between gap-4;
+  }
+
+  .field-editor-controls {
+    @apply flex items-center gap-3;
   }
 
   .field-editor-row {
     @apply grid grid-cols-[0.85fr_0.9fr_1.1fr] gap-2;
+  }
+
+  .field-editor-row-with-action {
+    @apply relative pr-9;
+  }
+
+  .field-add-button {
+    @apply inline-flex h-8 items-center justify-center gap-1.5 rounded-md border border-line bg-white px-2.5 text-xs font-medium transition-colors cursor-pointer;
+  }
+
+  .field-add-button:hover {
+    @apply border-neutral-400 bg-surface;
+  }
+
+  .field-add-button:disabled {
+    @apply cursor-not-allowed opacity-35;
+  }
+
+  .field-add-button span[aria-hidden] {
+    @apply text-base leading-none;
+  }
+
+  .field-remove-button {
+    @apply absolute right-1 top-1/2 inline-flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-md border border-line bg-white text-sm font-medium text-neutral-500 opacity-0 transition cursor-pointer;
+  }
+
+  .field-editor-row-with-action:hover .field-remove-button,
+  .field-editor-row-with-action:focus-within .field-remove-button {
+    @apply opacity-100;
+  }
+
+  .field-remove-button:hover {
+    @apply border-neutral-400 text-neutral-950;
+  }
+
+  .field-remove-button:disabled {
+    @apply cursor-not-allowed opacity-0;
+  }
+
+  .form-message {
+    @apply rounded-md border px-3 py-2 text-sm;
+  }
+
+  .form-message-success {
+    @apply border-emerald-200 bg-emerald-50 text-emerald-800;
+  }
+
+  .form-message-error {
+    @apply border-red-200 bg-red-50 text-red-800;
   }
 
   .reference-card {
