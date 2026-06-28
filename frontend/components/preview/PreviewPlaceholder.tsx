@@ -18,7 +18,7 @@ export function PreviewPlaceholder({
       <div className="preview-card-body">
         <div>
           <div className="preview-icon-placeholder" />
-          <p className="small-title text-neutral-700">Preview canvas</p>
+          <p className="small-title">Preview canvas</p>
         </div>
       </div>
     </div>

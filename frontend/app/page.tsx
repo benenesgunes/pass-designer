@@ -64,9 +64,9 @@ export default function Home() {
           <div className="grid gap-3">
             <PassMiniature passType="generic" />
             <div className="grid grid-cols-3 gap-3">
-              <div className="h-24 rounded-lg border border-line bg-white" />
-              <div className="h-24 rounded-lg border border-line bg-white" />
-              <div className="h-24 rounded-lg border border-line bg-white" />
+              <div className="home-visual-tile" />
+              <div className="home-visual-tile" />
+              <div className="home-visual-tile" />
             </div>
           </div>
         </section>

@@ -4,15 +4,66 @@
   --background: #f5f5f7;
   --foreground: #1d1d1f;
   --surface: #ffffff;
+  --surface-soft: #f5f5f7;
+  --surface-raised: #ffffff;
   --muted: #6e6e73;
   --line: #d2d2d7;
+  --line-strong: #86868b;
   --accent: #0066cc;
+  --primary: #1d1d1f;
+  --primary-hover: #333336;
+  --primary-foreground: #ffffff;
+  --disabled: #a1a1a6;
+  --shadow-soft: rgba(0, 0, 0, 0.08);
+  --shadow-strong: rgba(0, 0, 0, 0.12);
+  --selection-bg: #b9d7f4;
+  --selection-fg: #111111;
+  --success-bg: #ecfdf3;
+  --success-border: #bbf7d0;
+  --success-fg: #166534;
+  --error-bg: #fef2f2;
+  --error-border: #fecaca;
+  --error-fg: #991b1b;
+  --miniature-strong: #1d1d1f;
+  --miniature-soft: #e5e5ea;
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --background: #101012;
+  --foreground: #f5f5f7;
+  --surface: #1c1c1e;
+  --surface-soft: #2c2c2e;
+  --surface-raised: #242426;
+  --muted: #a1a1a6;
+  --line: #3a3a3c;
+  --line-strong: #636366;
+  --accent: #0a84ff;
+  --primary: #f5f5f7;
+  --primary-hover: #e5e5ea;
+  --primary-foreground: #101012;
+  --disabled: #636366;
+  --shadow-soft: rgba(0, 0, 0, 0.28);
+  --shadow-strong: rgba(0, 0, 0, 0.36);
+  --selection-bg: #154f86;
+  --selection-fg: #ffffff;
+  --success-bg: #0d2f1d;
+  --success-border: #226c3b;
+  --success-fg: #b7f7c8;
+  --error-bg: #3b1215;
+  --error-border: #7f1d1d;
+  --error-fg: #fecaca;
+  --miniature-strong: #f5f5f7;
+  --miniature-soft: #3a3a3c;
+  color-scheme: dark;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);
+  --color-surface-soft: var(--surface-soft);
+  --color-surface-raised: var(--surface-raised);
   --color-muted: var(--muted);
   --color-line: var(--line);
   --color-accent: var(--accent);
@@ -43,8 +94,8 @@ a {
 }
 
 ::selection {
-  background: #b9d7f4;
-  color: #111111;
+  background: var(--selection-bg);
+  color: var(--selection-fg);
 }
 
 @layer components {
@@ -54,7 +105,7 @@ a {
   }
 
   .site-nav {
-    @apply mx-auto flex h-12 w-full max-w-7xl items-center justify-between px-5 text-sm;
+    @apply mx-auto flex h-12 w-full max-w-7xl items-center justify-between px-4 text-xs sm:px-5 sm:text-sm;
   }
 
   .site-brand {
@@ -62,7 +113,34 @@ a {
   }
 
   .site-nav-list {
-    @apply flex items-center gap-5 text-muted;
+    @apply flex items-center gap-3 text-muted sm:gap-5;
+  }
+
+  .theme-toggle {
+    @apply grid h-8 w-8 place-items-center rounded-md border border-line transition-colors;
+    background: var(--surface);
+    color: var(--foreground);
+  }
+
+  .theme-toggle:hover {
+    border-color: var(--line-strong);
+    background: var(--surface-soft);
+  }
+
+  .theme-icon {
+    @apply col-start-1 row-start-1 h-4 w-4 transition-opacity;
+  }
+
+  .theme-icon-sun {
+    @apply opacity-0;
+  }
+
+  :root[data-theme="dark"] .theme-icon-sun {
+    @apply opacity-100;
+  }
+
+  :root[data-theme="dark"] .theme-icon-moon {
+    @apply opacity-0;
   }
 
   .site-nav-link {
@@ -154,7 +232,7 @@ a {
   }
 
   .home-visual-tile {
-    @apply h-24 rounded-lg border border-line bg-white;
+    @apply h-24 rounded-lg border border-line bg-surface;
   }
 
   .pass-type-grid {
@@ -178,23 +256,26 @@ a {
   }
 
   .btn-primary {
-    @apply inline-flex h-11 items-center justify-center rounded-md bg-neutral-950 px-5 text-sm font-medium text-white transition-colors;
+    @apply inline-flex h-11 items-center justify-center rounded-md px-5 text-sm font-medium transition-colors;
+    background: var(--primary);
+    color: var(--primary-foreground);
   }
 
   .btn-primary:hover {
-    @apply bg-neutral-800;
+    background: var(--primary-hover);
   }
 
   .btn-primary:disabled {
-    @apply cursor-not-allowed bg-neutral-400;
+    @apply cursor-not-allowed;
+    background: var(--disabled);
   }
 
   .btn-secondary {
-    @apply inline-flex h-11 items-center justify-center rounded-md border border-line bg-white px-5 text-sm font-medium transition-colors;
+    @apply inline-flex h-11 items-center justify-center rounded-md border border-line bg-surface px-5 text-sm font-medium transition-colors;
   }
 
   .btn-secondary:hover {
-    @apply border-neutral-400;
+    border-color: var(--line-strong);
   }
 
   .form-stack {
@@ -206,31 +287,31 @@ a {
   }
 
   .form-input {
-    @apply h-10 rounded-md border border-line bg-white px-3 text-sm outline-none transition-colors;
+    @apply h-10 rounded-md border border-line bg-surface px-3 text-sm text-foreground outline-none transition-colors;
   }
 
   .form-input:focus {
-    @apply border-neutral-500;
+    border-color: var(--accent);
   }
 
   .form-input-sm {
-    @apply h-9 min-w-0 rounded-md border border-line bg-white px-2 text-xs outline-none transition-colors;
+    @apply h-9 min-w-0 rounded-md border border-line bg-surface px-2 text-xs text-foreground outline-none transition-colors;
   }
 
   .form-input-sm:focus {
-    @apply border-neutral-500;
+    border-color: var(--accent);
   }
 
   .form-select {
-    @apply h-10 rounded-md border border-line bg-white px-3 outline-none transition-colors;
+    @apply h-10 rounded-md border border-line bg-surface px-3 text-foreground outline-none transition-colors;
   }
 
   .form-select:focus {
-    @apply border-neutral-500;
+    border-color: var(--accent);
   }
 
   .form-color-input {
-    @apply h-10 w-11 rounded-md border border-line bg-white p-1;
+    @apply h-10 w-11 rounded-md border border-line bg-surface p-1;
   }
 
   .color-input-row {
@@ -238,23 +319,25 @@ a {
   }
 
   .radio-input {
-    @apply mt-1 h-4 w-4 accent-black;
+    @apply mt-1 h-4 w-4;
+    accent-color: var(--foreground);
   }
 
   .checkbox-input {
-    @apply h-4 w-4 accent-black;
+    @apply h-4 w-4;
+    accent-color: var(--foreground);
   }
 
   .choice-card {
-    @apply flex cursor-pointer items-start gap-3 rounded-lg border border-line bg-white p-3 transition-colors;
+    @apply flex cursor-pointer items-start gap-3 rounded-lg border border-line bg-surface p-3 transition-colors;
   }
 
   .choice-card:hover {
-    @apply border-neutral-400;
+    border-color: var(--line-strong);
   }
 
   .toggle-card {
-    @apply flex items-center justify-between gap-4 rounded-lg border border-line bg-white px-3 py-2;
+    @apply flex items-center justify-between gap-4 rounded-lg border border-line bg-surface px-3 py-2;
   }
 
   .choice-copy {
@@ -310,11 +393,12 @@ a {
   }
 
   .field-add-button {
-    @apply inline-flex h-8 items-center justify-center gap-1.5 rounded-md border border-line bg-white px-2.5 text-xs font-medium transition-colors cursor-pointer;
+    @apply inline-flex h-8 cursor-pointer items-center justify-center gap-1.5 rounded-md border border-line bg-surface px-2.5 text-xs font-medium transition-colors;
   }
 
   .field-add-button:hover {
-    @apply border-neutral-400 bg-surface;
+    border-color: var(--line-strong);
+    background: var(--surface-soft);
   }
 
   .field-add-button:disabled {
@@ -326,7 +410,7 @@ a {
   }
 
   .field-remove-button {
-    @apply absolute right-1 top-1/2 inline-flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-md border border-line bg-white text-sm font-medium text-neutral-500 opacity-0 transition cursor-pointer;
+    @apply absolute right-1 top-1/2 inline-flex h-7 w-7 -translate-y-1/2 cursor-pointer items-center justify-center rounded-md border border-line bg-surface text-sm font-medium text-muted opacity-0 transition;
   }
 
   .field-editor-row-with-action:hover .field-remove-button,
@@ -335,7 +419,8 @@ a {
   }
 
   .field-remove-button:hover {
-    @apply border-neutral-400 text-neutral-950;
+    border-color: var(--line-strong);
+    color: var(--foreground);
   }
 
   .field-remove-button:disabled {
@@ -347,11 +432,15 @@ a {
   }
 
   .form-message-success {
-    @apply border-emerald-200 bg-emerald-50 text-emerald-800;
+    border-color: var(--success-border);
+    background: var(--success-bg);
+    color: var(--success-fg);
   }
 
   .form-message-error {
-    @apply border-red-200 bg-red-50 text-red-800;
+    border-color: var(--error-border);
+    background: var(--error-bg);
+    color: var(--error-fg);
   }
 
   .reference-card {
@@ -359,7 +448,7 @@ a {
   }
 
   .reference-card-white {
-    @apply rounded-lg border border-line bg-white;
+    @apply rounded-lg border border-line bg-surface;
   }
 
   .reference-card-header {
@@ -375,11 +464,11 @@ a {
   }
 
   .pass-card-link {
-    @apply rounded-lg border border-line bg-white p-4 transition-colors;
+    @apply rounded-lg border border-line bg-surface p-4 transition-colors;
   }
 
   .pass-card-link:hover {
-    @apply border-neutral-400;
+    border-color: var(--line-strong);
   }
 
   .pass-card-action {
@@ -387,12 +476,20 @@ a {
   }
 
   .group:hover .pass-card-action {
-    @apply text-neutral-950;
+    @apply text-foreground;
   }
 
   .pass-miniature {
-    @apply relative h-36 w-full overflow-hidden rounded-lg border border-line bg-white;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+    @apply relative h-36 w-full overflow-hidden rounded-lg border border-line bg-surface;
+    box-shadow: 0 20px 60px var(--shadow-soft);
+  }
+
+  .pass-miniature-mark {
+    background: var(--miniature-strong);
+  }
+
+  .pass-miniature-mark-soft {
+    background: var(--miniature-soft);
   }
 
   .pass-miniature-body {
@@ -400,8 +497,8 @@ a {
   }
 
   .preview-card {
-    @apply flex aspect-[9/14] w-full max-w-[360px] flex-col rounded-lg border border-line bg-white;
-    box-shadow: 0 28px 80px rgba(0, 0, 0, 0.08);
+    @apply flex aspect-[9/14] w-full max-w-[360px] flex-col rounded-lg border border-line bg-surface;
+    box-shadow: 0 28px 80px var(--shadow-soft);
   }
 
   .preview-card-header {
@@ -413,13 +510,13 @@ a {
   }
 
   .preview-icon-placeholder {
-    @apply mx-auto mb-5 h-16 w-16 rounded-lg border border-line bg-neutral-50;
+    @apply mx-auto mb-5 h-16 w-16 rounded-lg border border-line bg-surface-soft;
   }
 
   .wallet-pass-card {
     @apply flex aspect-[9/14] w-full max-w-[360px] flex-col overflow-hidden rounded-lg border border-black/10 p-5;
     background: var(--pass-bg);
-    box-shadow: 0 28px 80px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 28px 80px var(--shadow-strong);
     color: var(--pass-fg);
   }
 

@@ -22,17 +22,17 @@ export function PassMiniature({ passType }: PassMiniatureProps) {
       />
       <div className="pass-miniature-body">
         <div className="flex items-center justify-between">
-          <div className="h-3 w-24 rounded-full bg-neutral-900" />
-          <div className="h-7 w-7 rounded-md bg-neutral-100" />
+          <div className="pass-miniature-mark h-3 w-24 rounded-full" />
+          <div className="pass-miniature-mark-soft h-7 w-7 rounded-md" />
         </div>
         <div className="space-y-2">
-          <div className="h-8 w-32 rounded-md bg-neutral-950" />
-          <div className="h-2 w-44 rounded-full bg-neutral-200" />
+          <div className="pass-miniature-mark h-8 w-32 rounded-md" />
+          <div className="pass-miniature-mark-soft h-2 w-44 rounded-full" />
         </div>
         <div className="grid grid-cols-3 gap-2 pt-2">
-          <div className="h-8 rounded-md bg-neutral-100" />
-          <div className="h-8 rounded-md bg-neutral-100" />
-          <div className="h-8 rounded-md bg-neutral-100" />
+          <div className="pass-miniature-mark-soft h-8 rounded-md" />
+          <div className="pass-miniature-mark-soft h-8 rounded-md" />
+          <div className="pass-miniature-mark-soft h-8 rounded-md" />
         </div>
       </div>
     </div>
