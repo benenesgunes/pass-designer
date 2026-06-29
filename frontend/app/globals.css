@@ -278,6 +278,12 @@ a {
     border-color: var(--line-strong);
   }
 
+  .btn-secondary:disabled {
+    @apply cursor-not-allowed;
+    color: var(--disabled);
+    border-color: var(--line);
+  }
+
   .form-stack {
     @apply grid gap-3;
   }

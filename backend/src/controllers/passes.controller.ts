@@ -1,27 +1,27 @@
 import { randomUUID } from "node:crypto";
 import type { RequestHandler } from "express";
 import type { CreatePassRequest, CreatePassResponse } from "../types/pass";
-import { env } from "../config/env";
 import {
   PKPASS_MIME_TYPE,
-  createPlaceholderPassFile,
   findPassFile,
+  saveDebugPassJsonFile,
 } from "../services/passFile.service";
-
-function buildDownloadUrl(passId: string) {
-  return `${env.backendUrl.replace(/\/$/, "")}/passes/${passId}.pkpass`;
-}
+import { buildPassJson } from "../services/passJson.service";
 
 export const createPass: RequestHandler = async (request, response, next) => {
   try {
     const passId = randomUUID();
+    const createPassRequest = request.body as CreatePassRequest;
 
-    await createPlaceholderPassFile(passId, request.body as CreatePassRequest);
+    const passJson = buildPassJson(createPassRequest.design, passId);
+
+    await saveDebugPassJsonFile(passId, passJson);
 
     const payload: CreatePassResponse = {
       success: true,
+      mode: "unsigned-debug",
       passId,
-      downloadUrl: buildDownloadUrl(passId),
+      message: "Pass JSON generated, but Apple signing is not configured yet.",
     };
 
     response.json(payload);

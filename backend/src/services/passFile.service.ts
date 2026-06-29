@@ -2,6 +2,7 @@ import { access, mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import type { CreatePassRequest } from "../types/pass";
 import { generatedPassesDir } from "../config/paths";
+import type { PassJson } from "./passJson.service";
 
 export const PKPASS_MIME_TYPE = "application/vnd.apple.pkpass";
 
@@ -17,6 +18,14 @@ function getPassFilePath(passId: string) {
   }
 
   return path.join(generatedPassesDir, `${passId}.pkpass`);
+}
+
+function getDebugPassJsonFilePath(passId: string) {
+  if (!isSafePassId(passId)) {
+    return null;
+  }
+
+  return path.join(generatedPassesDir, `debug-${passId}.json`);
 }
 
 export async function createPlaceholderPassFile(
@@ -46,6 +55,19 @@ export async function createPlaceholderPassFile(
   return filePath;
 }
 
+export async function saveDebugPassJsonFile(passId: string, passJson: PassJson) {
+  const filePath = getDebugPassJsonFilePath(passId);
+
+  if (!filePath) {
+    throw new Error("Invalid pass ID.");
+  }
+
+  await mkdir(generatedPassesDir, { recursive: true });
+  await writeFile(filePath, JSON.stringify(passJson, null, 2));
+
+  return filePath;
+}
+
 export async function findPassFile(passId: string) {
   const filePath = getPassFilePath(passId);
 
@@ -60,4 +82,3 @@ export async function findPassFile(passId: string) {
     return null;
   }
 }
-

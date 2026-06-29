@@ -147,9 +147,10 @@ export const createPassRequestSchema = z.object({
 }) satisfies z.ZodType<CreatePassRequest>;
 
 export const createPassResponseSchema = z.object({
-  success: z.boolean(),
+  success: z.literal(true),
+  mode: z.literal("unsigned-debug"),
   passId: z.string(),
-  downloadUrl: z.string(),
+  message: z.string(),
 }) satisfies z.ZodType<CreatePassResponse>;
 
 export function parseCreatePassRequest(input: unknown): CreatePassRequest {

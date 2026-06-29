@@ -27,4 +27,3 @@ export const validateCreatePassRequest: RequestHandler = (
   request.body = result.data;
   next();
 };
-

@@ -2,15 +2,43 @@
 
 import type { FormEvent } from "react";
 import { useState } from "react";
+import type { CreatePassResponse, PassDesign } from "@/lib/pass";
 
-type SubmitState = "idle" | "loading" | "success" | "error";
+type SubmitState = "idle" | "generating" | "success" | "error";
 
-export function EmailSubmitPanel() {
+type ApiErrorResponse = {
+  errors?: Array<{
+    field: string;
+    message: string;
+  }>;
+  message?: string;
+  success: false;
+};
+
+type EmailSubmitPanelProps = {
+  design?: PassDesign;
+};
+
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "") ?? "http://localhost:8080";
+
+function getApiErrorMessage(errorResponse: ApiErrorResponse) {
+  const firstError = errorResponse.errors?.[0];
+
+  if (firstError) {
+    return `${firstError.field}: ${firstError.message}`;
+  }
+
+  return errorResponse.message ?? "Pass generation failed.";
+}
+
+export function EmailSubmitPanel({ design }: EmailSubmitPanelProps) {
   const [email, setEmail] = useState("");
   const [submitState, setSubmitState] = useState<SubmitState>("idle");
   const [message, setMessage] = useState("");
+  const [passId, setPassId] = useState<string | null>(null);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (!event.currentTarget.reportValidity()) {
@@ -19,13 +47,43 @@ export function EmailSubmitPanel() {
       return;
     }
 
-    setSubmitState("loading");
-    setMessage("");
+    if (!design) {
+      setSubmitState("error");
+      setMessage("Pass design is not available.");
+      return;
+    }
 
-    window.setTimeout(() => {
+    setSubmitState("generating");
+    setMessage("");
+    setPassId(null);
+
+    try {
+      const endpoint = `${API_BASE_URL}/api/passes/create`;
+
+      const response = await fetch(endpoint, {
+        body: JSON.stringify({ email, design }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+      });
+      const responseBody = (await response.json()) as
+        | ApiErrorResponse
+        | CreatePassResponse;
+
+      if (!response.ok || !responseBody.success) {
+        setSubmitState("error");
+        setMessage(getApiErrorMessage(responseBody as ApiErrorResponse));
+        return;
+      }
+
+      setPassId(responseBody.passId);
       setSubmitState("success");
-      setMessage("Ready to send when the backend API is connected.");
-    }, 500);
+      setMessage(responseBody.message);
+    } catch {
+      setSubmitState("error");
+      setMessage("Could not reach the backend API.");
+    }
   }
 
   return (
@@ -36,9 +94,10 @@ export function EmailSubmitPanel() {
           className="form-input"
           onChange={(event) => {
             setEmail(event.target.value);
-            if (submitState !== "loading") {
+            if (submitState !== "generating") {
               setSubmitState("idle");
               setMessage("");
+              setPassId(null);
             }
           }}
           placeholder="you@example.com"
@@ -49,10 +108,10 @@ export function EmailSubmitPanel() {
       </label>
       <button
         className="btn-primary w-full px-4"
-        disabled={submitState === "loading"}
+        disabled={submitState === "generating"}
         type="submit"
       >
-        {submitState === "loading" ? "Preparing..." : "Generate & Send Pass"}
+        {submitState === "generating" ? "Generating..." : "Generate Pass"}
       </button>
       {message ? (
         <p
@@ -66,6 +125,7 @@ export function EmailSubmitPanel() {
           {message}
         </p>
       ) : null}
+      {passId ? <p className="muted-caption">Pass ID: {passId}</p> : null}
     </form>
   );
 }

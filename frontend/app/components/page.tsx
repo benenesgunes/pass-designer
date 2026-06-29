@@ -145,7 +145,7 @@ export default function ComponentsPage() {
               <div className="reference-card">
                 <div className="reference-card-header">Delivery</div>
                 <div className="reference-card-body">
-                  <EmailSubmitPanel />
+                  <EmailSubmitPanel design={design} />
                 </div>
               </div>
             </div>

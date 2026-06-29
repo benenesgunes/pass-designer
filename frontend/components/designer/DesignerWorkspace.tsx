@@ -118,7 +118,7 @@ export function DesignerWorkspace() {
           />
         </PanelSection>
         <PanelSection title="Delivery">
-          <EmailSubmitPanel />
+          <EmailSubmitPanel design={passData} />
         </PanelSection>
       </aside>
     </div>

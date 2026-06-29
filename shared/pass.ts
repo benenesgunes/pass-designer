@@ -247,9 +247,10 @@ export type CreatePassRequest = {
 };
 
 export type CreatePassResponse = {
-  success: boolean;
+  success: true;
+  mode: "unsigned-debug";
   passId: string;
-  downloadUrl: string;
+  message: string;
 };
 
 export const DEFAULT_PASS_DESIGN: PassDesign = {
