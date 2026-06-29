@@ -3,7 +3,7 @@ import { AppHeader } from "@/components/ui/AppHeader";
 
 export default function DesignerPage() {
   return (
-    <div className="min-h-screen">
+    <div className="designer-page">
       <AppHeader />
       <DesignerWorkspace />
     </div>

@@ -18,11 +18,7 @@
   --shadow-strong: rgba(0, 0, 0, 0.12);
   --selection-bg: #b9d7f4;
   --selection-fg: #111111;
-  --success-bg: #ecfdf3;
-  --success-border: #bbf7d0;
   --success-fg: #166534;
-  --error-bg: #fef2f2;
-  --error-border: #fecaca;
   --error-fg: #991b1b;
   --miniature-strong: #1d1d1f;
   --miniature-soft: #e5e5ea;
@@ -47,11 +43,7 @@
   --shadow-strong: rgba(0, 0, 0, 0.36);
   --selection-bg: #154f86;
   --selection-fg: #ffffff;
-  --success-bg: #0d2f1d;
-  --success-border: #226c3b;
   --success-fg: #b7f7c8;
-  --error-bg: #3b1215;
-  --error-border: #7f1d1d;
   --error-fg: #fecaca;
   --miniature-strong: #f5f5f7;
   --miniature-soft: #3a3a3c;
@@ -100,7 +92,7 @@ a {
 
 @layer components {
   .site-header {
-    @apply sticky top-0 z-20 border-b border-line/80 backdrop-blur-xl;
+    @apply sticky top-0 z-20 shrink-0 border-b border-line/80 backdrop-blur-xl;
     background: color-mix(in srgb, var(--background) 85%, transparent);
   }
 
@@ -413,6 +405,10 @@ a {
     @apply mb-4 text-xs font-semibold uppercase text-muted;
   }
 
+  .designer-page {
+    @apply min-h-screen;
+  }
+
   .designer-grid {
     @apply grid min-h-[calc(100vh-48px)] grid-cols-1;
   }
@@ -485,18 +481,14 @@ a {
   }
 
   .form-message {
-    @apply rounded-md border px-3 py-2 text-sm;
+    @apply text-sm font-medium leading-6;
   }
 
   .form-message-success {
-    border-color: var(--success-border);
-    background: var(--success-bg);
     color: var(--success-fg);
   }
 
   .form-message-error {
-    border-color: var(--error-border);
-    background: var(--error-bg);
     color: var(--error-fg);
   }
 
@@ -906,13 +898,22 @@ a {
       @apply grid-cols-3;
     }
 
+    body:has(.designer-page) {
+      overflow: hidden;
+    }
+
+    .designer-page {
+      @apply flex min-h-0 flex-col overflow-hidden;
+      height: 100dvh;
+    }
+
     .designer-grid {
+      @apply min-h-0 flex-1 overflow-hidden;
       grid-template-columns: 320px 1fr 360px;
     }
 
     .preview-stage {
-      @apply sticky top-12 h-[calc(100vh-48px)] min-h-0 overflow-hidden;
-      align-self: start;
+      @apply h-full min-h-0 overflow-hidden;
     }
 
     .preview-stage > * {
@@ -921,11 +922,11 @@ a {
     }
 
     .designer-sidebar-left {
-      @apply border-b-0 border-r;
+      @apply min-h-0 overflow-y-auto overscroll-contain border-b-0 border-r;
     }
 
     .designer-sidebar-right {
-      @apply border-l border-t-0;
+      @apply min-h-0 overflow-y-auto overscroll-contain border-l border-t-0;
     }
   }
 
